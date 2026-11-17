@@ -30,11 +30,11 @@ struct SettingsView: View {
                 .padding(.bottom, 28)
             }
             .background(Color.black.ignoresSafeArea())
-            .navigationTitle(t.s("settings_title"))
+            .navigationTitle(Text(t.s("settings_title")))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(t.s("select_done")) { dismiss() }
+                    Button { dismiss() } label: { Text(t.s("select_done")) }
                 }
             }
             .task {

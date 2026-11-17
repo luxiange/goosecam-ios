@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// 内置相册：读 App 沙盒 Documents/goosecam，支持多选删除、全屏缩放与左右切换。
 struct GalleryView: View {
@@ -42,15 +43,17 @@ struct GalleryView: View {
                     }
                 }
             }
-            .navigationTitle(t.s("gallery_title"))
+            .navigationTitle(Text(t.s("gallery_title")))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(t.s("back")) { dismiss() }
+                    Button { dismiss() } label: { Text(t.s("back")) }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(multiSelect ? t.s("select_done") : t.s("multi_select")) {
+                    Button {
                         toggleMulti()
+                    } label: {
+                        Text(multiSelect ? t.s("select_done") : t.s("multi_select"))
                     }
                     .disabled(items.isEmpty)
                 }
@@ -71,9 +74,9 @@ struct GalleryView: View {
                     .padding(.bottom, 12)
                 }
             }
-            .confirmationDialog(t.s("gallery_delete_confirm"), isPresented: $showBatchConfirm, titleVisibility: .visible) {
-                Button(t.s("confirm_delete"), role: .destructive) { deleteSelected() }
-                Button(t.s("cancel"), role: .cancel) {}
+            .confirmationDialog(Text(t.s("gallery_delete_confirm")), isPresented: $showBatchConfirm, titleVisibility: .visible) {
+                Button(role: .destructive) { deleteSelected() } label: { Text(t.s("confirm_delete")) }
+                Button(role: .cancel) {} label: { Text(t.s("cancel")) }
             }
         }
         .preferredColorScheme(.dark)
@@ -275,9 +278,9 @@ struct PhotoViewer: View {
         }
         .statusBarHidden(true)
         .task(id: current.id) { await load() }
-        .confirmationDialog(t.s("gallery_delete_confirm"), isPresented: $showDeleteConfirm, titleVisibility: .visible) {
-            Button(t.s("confirm_delete"), role: .destructive) { onDelete(current) }
-            Button(t.s("cancel"), role: .cancel) {}
+        .confirmationDialog(Text(t.s("gallery_delete_confirm")), isPresented: $showDeleteConfirm, titleVisibility: .visible) {
+            Button(role: .destructive) { onDelete(current) } label: { Text(t.s("confirm_delete")) }
+            Button(role: .cancel) {} label: { Text(t.s("cancel")) }
         }
     }
 

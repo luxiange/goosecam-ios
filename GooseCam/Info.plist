@@ -32,7 +32,7 @@
 	<string>需要读取相册中的照片用于导入运算</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>录制视频时需要使用麦克风</string>
-	<key>NSMotionUsageDescription</string>
+	<key>NSMotionUsageDescription</key>
 	<string>需要使用陀螺仪来显示水平仪</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>

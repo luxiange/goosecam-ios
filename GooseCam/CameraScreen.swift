@@ -1,5 +1,6 @@
 import SwiftUI
 import AVFoundation
+import UIKit
 
 /// 主界面：复刻安卓 activity_main.xml 的层级——4:5 取景框 / 网格 / 水平仪 / 对焦框 /
 /// 焦段条 / 闪光灯 / 快门 / 左下角缩略图 / 右下角相机图案（进设置）。
