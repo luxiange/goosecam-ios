@@ -1,0 +1,16 @@
+name: Runner probe
+
+on:
+  push:
+    branches: [ci-probe]
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Say hello
+        run: |
+          uname -a
+          echo "linux runner acquired ok"
