@@ -1,0 +1,9 @@
+# iOS 版打包产物
+build/
+DerivedData/
+*.xcuserstate
+*.xcuserdatad/
+GooseCam.xcodeproj/
+out/*.ipa
+build.log
+.DS_Store

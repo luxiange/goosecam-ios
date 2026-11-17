@@ -1,0 +1,92 @@
+name: Build unsigned IPA
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          xcode-select -p
+          sw_vers
+          swift --version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: |
+          xcodegen generate
+          xcodebuild -list -project GooseCam.xcodeproj
+
+      - name: Build app (unsigned)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project GooseCam.xcodeproj \
+            -scheme GooseCam \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            ARCHS=arm64 \
+            ONLY_ACTIVE_ARCH=NO \
+            build 2>&1 | tee build.log | tail -120
+
+      - name: Package IPA
+        run: |
+          APP=$(find build/Build/Products/Release-iphoneos -maxdepth 1 -name "*.app" | head -1)
+          echo "found app: $APP"
+          test -n "$APP"
+          rm -rf out
+          mkdir -p out/Payload
+          cp -R "$APP" out/Payload/
+          cd out
+          zip -qry GooseCam-unsigned.ipa Payload
+          ls -lh GooseCam-unsigned.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GooseCam-unsigned-ipa
+          path: out/GooseCam-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 30
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-log
+          path: build.log
+          if-no-files-found: ignore
+          retention-days: 7
+
+      # 产物备份通道：把 IPA / 构建日志推到 builds 分支，
+      # 这样在没有 GitHub 会话、且 objects.githubusercontent.com 不通的机器上也能拉到文件。
+      - name: Publish result to builds branch
+        if: always()
+        run: |
+          mkdir -p dist
+          if [ -f out/GooseCam-unsigned.ipa ]; then cp out/GooseCam-unsigned.ipa dist/; fi
+          if [ -f build.log ]; then cp build.log dist/; fi
+          ls -la dist
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan build-out
+          git rm -r --cached . -q || true
+          git add -f dist
+          if git commit -m "build ${GITHUB_SHA}"; then
+            git push -f origin build-out:builds
+          else
+            echo "nothing to publish"
+          fi
