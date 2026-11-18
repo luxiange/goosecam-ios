@@ -363,7 +363,7 @@ final class CameraSession: NSObject, ObservableObject, AVCapturePhotoCaptureDele
             autoreleasepool {
                 Diag.mark("grade.raw begin")
                 let started = Date()
-                if let image = M72Filter.developRaw(rawData), let out = M72Filter.processPhoto(image) {
+                if let image = M72Filter.developRaw(rawData), let out = M72Filter.processPhoto(image, debugSave: true) {
                     Diag.mark(String(format: "grade.raw end %.2fs", Date().timeIntervalSince(started)))
                     saved = PhotoStore.shared.save(out, prefix: "M72") != nil
                     Diag.mark("save(raw) \(saved ? "ok" : "fail")")

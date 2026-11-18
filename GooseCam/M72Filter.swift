@@ -21,14 +21,27 @@ enum M72Filter {
     // MARK: - 对外流水线
 
     /// 拍照：4:5 居中裁切 → M72 调色 → 黑边框
-    static func processPhoto(_ image: UIImage) -> UIImage? {
+    /// debugSave=true 时把“调色前”的底图存到 Documents/goosecam/debug/pre.jpg，供离线标定用
+    static func processPhoto(_ image: UIImage, debugSave: Bool = false) -> UIImage? {
         guard let raster = rasterize(image, cropTo45: true, standardSize: nil) else { return nil }
         defer { raster.dispose() }
+        if debugSave { dumpDebug(raster) }
         guard grade(raster) else { return nil }
         softSharpen(raster, soft: 0.06, sharpen: 0.18)
         bloom(raster, threshold: 0.72, strength: 0.08)
         vignette(raster)
         return bordered(raster)
+    }
+
+    /// 把调色前的底图与统计写盘（只用于标定，正式版可关）
+    private static func dumpDebug(_ r: Raster) {
+        guard let img = r.makeImage(), let data = img.jpegData(compressionQuality: 0.9) else { return }
+        let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("goosecam/debug", isDirectory: true)
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let url = dir.appendingPathComponent("pre.jpg")
+        try? data.write(to: url)
+        Diag.mark("debug.pre saved \(r.width)x\(r.height) -> \(url.lastPathComponent)")
     }
 
     /// 导入：4:5 居中裁切（横图 5:4）→ 标准化分辨率 → M72 调色 → 黑边框
@@ -230,6 +243,7 @@ enum M72Filter {
         var lumSum: Double = 0
         var satSum: Double = 0
         var rbSum: Double = 0
+        var hist = [Int](repeating: 0, count: 256)
 
         var i = 0
         while i < n {
@@ -243,6 +257,7 @@ enum M72Filter {
             let mn = min(rf, min(gf, bf))
             satSum += mx > 1e-6 ? (mx - mn) / mx : 0
             rbSum += rf - bf
+            hist[min(255, max(0, Int((lum * 255.0).rounded())))] += 1
             i += 1
         }
 
@@ -251,34 +266,41 @@ enum M72Filter {
         let meanSat = satSum / total
         let meanRb = rbSum / total
 
+        let p10 = percentile(hist, 0.10, total)
+        let p50 = percentile(hist, 0.50, total)
+        let p90 = percentile(hist, 0.90, total)
+
+        // —— 基准归一化 ——
+        // 关键：RAW 渲染出来的底子和系统 JPEG 不在同一个亮度区间（同一场景中位亮度能差 0.07），
+        // 所以先用中位亮度把画面锚到标定域（0.43），再做固定曲线，否则中调会整片顶进高光肩部。
+        let anchor = 0.43
+        let normGain = clamp(anchor / max(p50, 0.05), 0.55, 1.75)
+        Diag.mark(String(format: "grade.in median=%.3f p10=%.3f p90=%.3f sat=%.3f rb=%.3f gain=%.2f",
+                         p50, p10, p90, meanSat, meanRb, normGain))
+
         // —— 场景权重（只做温和的自适应，主旋律是固定曲线）——
         let night = 1.0 - smooth((meanLum - 0.20) / 0.16)
         let bright = smooth((meanLum - 0.50) / 0.28)
 
-        // 曝光：基准 1.05；夜景更亮一点；大白场景略收
-        var expo = 1.05 + night * 0.07 - bright * 0.05
-        // RAW 与 JPEG 的基准亮度不同，这里做一层温和的自动曝光兜底
-        if meanLum < 0.33 {
-            expo *= min(1.45, pow(0.38 / max(meanLum, 0.03), 0.70))
-        }
-        if meanLum > 0.62 {
-            expo *= max(0.90, pow(0.55 / meanLum, 0.50))
-        }
+        // 曝光：归一化 × 基准 1.05；夜景再亮一点；大白场景略收
+        var expo = normGain * (1.05 + night * 0.07 - bright * 0.05)
         let toe = max(0.0, 0.030 - night * 0.012 + bright * 0.004)
-        var sat = 1.06 - bright * 0.03
-        sat -= smooth((meanSat - 0.42) / 0.26) * 0.10
+        // 饱和度按实测偏差补：目标 0.265 左右
+        var sat = 1.06 + (0.265 - meanSat) * 1.20 - bright * 0.03
+        sat = clamp(sat, 0.96, 1.34)
         let grain = 0.009 + 0.004 * (1.0 - smooth(meanLum))
-        // 暖相（画面偏红偏黄）时轻微补一点饱和度，冷相时略收
+        // 暖相（画面偏红偏黄）时轻微补一点饱和度
         let warmBias = clamp(meanRb / 0.05, 0, 1)
 
         // 固定曲线参数（按 gloam 样片标定）
         let shoulderT = 0.56
         let shMulR = 1.02 + warmBias * 0.01
-        let shMulG = 0.97
-        let shMulB = 0.80
+        let shMulG = 0.98
+        let shMulB = 0.94
         let hiMulR = 1.02
         let hiMulG = 1.00
-        let hiMulB = 0.94
+        let hiMulB = 0.96
+        let coldConverge = 0.10
 
         // —— 第二遍：逐像素 ——
         var rng: UInt64 = 72
@@ -296,8 +318,8 @@ enum M72Filter {
             bf = gray + (bf - gray) * sat
 
             // 冷相（绿/蓝主导）收敛，避免蓝被子那种“跳蓝”
-            if gf > rf && gf > bf { gf -= (gf - max(rf, bf)) * 0.22 }
-            if bf > rf && bf > gf { bf -= (bf - max(rf, gf)) * 0.22 }
+            if gf > rf && gf > bf { gf -= (gf - max(rf, bf)) * coldConverge }
+            if bf > rf && bf > gf { bf -= (bf - max(rf, gf)) * coldConverge }
 
             // 曝光 + 高光肩部（逐通道，天然把高光的冷白压成奶油白）
             rf = shoulder(rf * expo, shoulderT)
@@ -557,5 +579,16 @@ enum M72Filter {
     @inline(__always)
     private static func clamp(_ v: Double, _ lo: Double, _ hi: Double) -> Double {
         v < lo ? lo : (v > hi ? hi : v)
+    }
+
+    /// 直方图分位（hist 为 256 桶亮度分布）
+    private static func percentile(_ hist: [Int], _ p: Double, _ total: Double) -> Double {
+        let need = total * p
+        var acc = 0.0
+        for k in 0..<256 {
+            acc += Double(hist[k])
+            if acc >= need { return Double(k) / 255.0 }
+        }
+        return 1.0
     }
 }
