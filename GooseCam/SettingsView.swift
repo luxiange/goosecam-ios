@@ -13,7 +13,7 @@ struct SettingsView: View {
 
     private var t: L10n { L10n(raw: langRaw) }
     private var version: String {
-        (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String) ?? "0.40"
+        (Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String) ?? "0.41"
     }
 
     var body: some View {

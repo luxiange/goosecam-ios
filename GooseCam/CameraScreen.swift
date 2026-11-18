@@ -108,6 +108,18 @@ struct CameraScreen: View {
             RoundedRectangle(cornerRadius: 2)
                 .stroke(Color.white.opacity(0.12), lineWidth: 0.5)
         )
+        .overlay(alignment: .topLeading) {
+            if camera.usingRaw {
+                Text("RAW")
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundColor(Color(red: 1.0, green: 0.82, blue: 0.29))
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 3)
+                    .background(Capsule().fill(Color.black.opacity(0.55)))
+                    .overlay(Capsule().stroke(Color(red: 1.0, green: 0.82, blue: 0.29).opacity(0.5), lineWidth: 0.5))
+                    .padding(8)
+            }
+        }
     }
 
     private func handleTap(devicePoint: CGPoint, localPoint: CGPoint) {
