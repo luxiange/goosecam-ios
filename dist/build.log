@@ -1,0 +1,456 @@
+Command line invocation:
+    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/xcodebuild -project GooseCam.xcodeproj -scheme GooseCam -configuration Release -sdk iphoneos -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY= ARCHS=arm64 ONLY_ACTIVE_ARCH=NO build
+
+Build settings from command line:
+    ARCHS = arm64
+    CODE_SIGN_IDENTITY = 
+    CODE_SIGNING_ALLOWED = NO
+    CODE_SIGNING_REQUIRED = NO
+    ONLY_ACTIVE_ARCH = NO
+    SDKROOT = iphoneos26.5
+
+2026-11-18 04:38:16.938 xcodebuild[14941:44615] [MT] IDERunDestination: Supported platforms for the buildables in the current scheme is empty.
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS, id:dvtdevice-DVTiPhonePlaceholder-iphoneos:placeholder, name:Any iOS Device }
+{ platform:iOS Simulator, id:dvtdevice-DVTiOSDeviceSimulatorPlaceholder-iphonesimulator:placeholder, name:Any iOS Simulator Device }
+{ platform:iOS Simulator, arch:x86_64, id:B96D15BB-B2E3-42BD-9B0A-21DDF3025E12, OS:26.2, name:iPad (A16) }
+{ platform:iOS Simulator, arch:x86_64, id:F8B3305E-3AB8-444B-8D4C-55C819539442, OS:26.4.1, name:iPad (A16) }
+{ platform:iOS Simulator, arch:x86_64, id:1004B667-BDA8-423D-8971-9004BCE07C60, OS:26.5, name:iPad (A16) }
+{ platform:iOS Simulator, arch:x86_64, id:3AE84117-4F38-4A89-B1B0-3E363DCC7C98, OS:26.2, name:iPad Air 11-inch (M3) }
+{ platform:iOS Simulator, arch:x86_64, id:7EEBF3D7-3E17-4BC5-A173-788E9FB1FA33, OS:26.4.1, name:iPad Air 11-inch (M4) }
+{ platform:iOS Simulator, arch:x86_64, id:27220986-81EB-4104-BCFF-3485DE19C05A, OS:26.5, name:iPad Air 11-inch (M4) }
+{ platform:iOS Simulator, arch:x86_64, id:6BFEBDFC-BC1F-415D-8FBB-9012962D250E, OS:26.2, name:iPad Air 13-inch (M3) }
+{ platform:iOS Simulator, arch:x86_64, id:1E86E107-B7DF-4FD8-8C64-BFFCF5E306FA, OS:26.4.1, name:iPad Air 13-inch (M4) }
+{ platform:iOS Simulator, arch:x86_64, id:EABEAA9E-C39C-4D16-9E01-580A7AECDF6E, OS:26.5, name:iPad Air 13-inch (M4) }
+{ platform:iOS Simulator, arch:x86_64, id:1A278467-15B9-418B-9094-FB18A796E013, OS:26.2, name:iPad Pro 11-inch (M5) }
+{ platform:iOS Simulator, arch:x86_64, id:FB79F028-91F5-4631-8889-62DE742F274A, OS:26.4.1, name:iPad Pro 11-inch (M5) }
+{ platform:iOS Simulator, arch:x86_64, id:559613E8-6715-48A0-9B00-6BBE39B5F55E, OS:26.5, name:iPad Pro 11-inch (M5) }
+{ platform:iOS Simulator, arch:x86_64, id:428E6339-3D0F-4F63-A49F-85F2218D7B6C, OS:26.2, name:iPad Pro 13-inch (M5) }
+{ platform:iOS Simulator, arch:x86_64, id:9EA5AB5A-5656-4320-AAF7-5653839BC85F, OS:26.4.1, name:iPad Pro 13-inch (M5) }
+{ platform:iOS Simulator, arch:x86_64, id:F3968FA0-4261-40EB-97EC-9B217ED56622, OS:26.5, name:iPad Pro 13-inch (M5) }
+{ platform:iOS Simulator, arch:x86_64, id:E67175B0-D3AF-4385-B038-2D571A060F4D, OS:26.2, name:iPad mini (A17 Pro) }
+{ platform:iOS Simulator, arch:x86_64, id:AFA0C42F-6683-4B9C-A749-C6AECB71B775, OS:26.4.1, name:iPad mini (A17 Pro) }
+{ platform:iOS Simulator, arch:x86_64, id:8C7EDB0F-FB0D-44B4-8225-C9496420EC61, OS:26.5, name:iPad mini (A17 Pro) }
+{ platform:iOS Simulator, arch:x86_64, id:4991A9D3-996D-42DB-A6AD-65D3DEE21541, OS:26.2, name:iPhone 16e }
+{ platform:iOS Simulator, arch:x86_64, id:9F21D44E-3C10-4271-A752-FE137CAD662E, OS:26.2, name:iPhone 17 }
+{ platform:iOS Simulator, arch:x86_64, id:4F19B6F9-95E3-420A-B4C4-F4BEA94447F1, OS:26.4.1, name:iPhone 17 }
+{ platform:iOS Simulator, arch:x86_64, id:0C838647-022A-46B9-BC8F-310CD1CE6BDE, OS:26.5, name:iPhone 17 }
+{ platform:iOS Simulator, arch:x86_64, id:07AB3AAD-1CD3-49D8-8BE8-6A00DAE0F963, OS:26.2, name:iPhone 17 Pro }
+{ platform:iOS Simulator, arch:x86_64, id:A6574FEC-AE06-46C2-92CC-F2BBAB2A5601, OS:26.4.1, name:iPhone 17 Pro }
+{ platform:iOS Simulator, arch:x86_64, id:12FCFD0F-7FCF-463F-A605-132A7E18B5D5, OS:26.5, name:iPhone 17 Pro }
+{ platform:iOS Simulator, arch:x86_64, id:834851D9-F360-4B86-84CE-FB315FCCD497, OS:26.2, name:iPhone 17 Pro Max }
+{ platform:iOS Simulator, arch:x86_64, id:B7D41906-C9E7-4893-9D8A-C1817C22F79D, OS:26.4.1, name:iPhone 17 Pro Max }
+{ platform:iOS Simulator, arch:x86_64, id:7BDAB748-D58F-4722-BAB1-2BF32EDBCB18, OS:26.5, name:iPhone 17 Pro Max }
+{ platform:iOS Simulator, arch:x86_64, id:D9CE034C-5F98-46D5-A358-07C6A16DC9D0, OS:26.4.1, name:iPhone 17e }
+{ platform:iOS Simulator, arch:x86_64, id:BEE1DA6A-2D7B-4C8A-ADC7-C179E371C247, OS:26.5, name:iPhone 17e }
+{ platform:iOS Simulator, arch:x86_64, id:304A51DB-39D1-4B57-8131-1681051FB1A3, OS:26.2, name:iPhone Air }
+{ platform:iOS Simulator, arch:x86_64, id:E5885517-A0F0-4BEB-BC27-4F00B57CD5B5, OS:26.4.1, name:iPhone Air }
+{ platform:iOS Simulator, arch:x86_64, id:01300204-EEE1-4E9A-B1FB-B1252F166CAB, OS:26.5, name:iPhone Air }
+note: Using codesigning identity override: 
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (1 target)
+    Target 'GooseCam' in project 'GooseCam' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: 5065c0faefa3e08a480648f6d54b525e
+Build description path: /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/XCBuildData/5065c0faefa3e08a480648f6d54b525e.xcbuilddata
+CreateBuildDirectory /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products
+    cd /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam.xcodeproj
+    builtin-create-build-directory /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products
+
+ClangStatCache /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk /Users/runner/work/goosecam-ios/goosecam-ios/build/SDKStatCaches.noindex/iphoneos26.5-23F81a-688ef53f1462e2c8f657fdc38a81448fee66e23052a0157c865c76b268046726.sdkstatcache
+    cd /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam.xcodeproj
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -o /Users/runner/work/goosecam-ios/goosecam-ios/build/SDKStatCaches.noindex/iphoneos26.5-23F81a-688ef53f1462e2c8f657fdc38a81448fee66e23052a0157c865c76b268046726.sdkstatcache
+
+CreateBuildDirectory /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex
+    cd /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam.xcodeproj
+    builtin-create-build-directory /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex
+
+CreateBuildDirectory /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos
+    cd /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam.xcodeproj
+    builtin-create-build-directory /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos
+
+CreateBuildDirectory /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+    cd /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam.xcodeproj
+    builtin-create-build-directory /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+WriteAuxiliaryFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam-132d7fe60e5b58dcddb620008eb8d7fb-VFS-iphoneos/all-product-headers.yaml
+    cd /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam.xcodeproj
+    write-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam-132d7fe60e5b58dcddb620008eb8d7fb-VFS-iphoneos/all-product-headers.yaml
+
+CreateBuildDirectory /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/ExplicitPrecompiledModules
+    cd /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam.xcodeproj
+    builtin-create-build-directory /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+CreateBuildDirectory /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/EagerLinkingTBDs/Release-iphoneos
+    cd /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam.xcodeproj
+    builtin-create-build-directory /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/EagerLinkingTBDs/Release-iphoneos
+
+WriteAuxiliaryFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam_const_extract_protocols.json (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    write-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam_const_extract_protocols.json
+
+WriteAuxiliaryFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.SwiftFileList (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    write-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.SwiftFileList
+
+WriteAuxiliaryFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.SwiftConstValuesFileList (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    write-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.SwiftConstValuesFileList
+
+WriteAuxiliaryFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.LinkFileList (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    write-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.LinkFileList
+
+WriteAuxiliaryFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam-OutputFileMap.json (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    write-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam-OutputFileMap.json
+
+WriteAuxiliaryFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam.hmap (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    write-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam.hmap
+
+WriteAuxiliaryFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam.DependencyStaticMetadataFileList (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    write-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam.DependencyStaticMetadataFileList
+
+WriteAuxiliaryFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam.DependencyMetadataFileList (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    write-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam.DependencyMetadataFileList
+
+WriteAuxiliaryFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-project-headers.hmap (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    write-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-project-headers.hmap
+
+WriteAuxiliaryFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-own-target-headers.hmap (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    write-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-own-target-headers.hmap
+
+WriteAuxiliaryFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-generated-files.hmap (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    write-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-generated-files.hmap
+
+WriteAuxiliaryFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-all-target-headers.hmap (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    write-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-all-target-headers.hmap
+
+WriteAuxiliaryFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-all-non-framework-target-headers.hmap (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    write-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-all-non-framework-target-headers.hmap
+
+MkDir /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    /bin/mkdir -p /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app
+
+MkDir /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_output/unthinned (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    /bin/mkdir -p /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_output/unthinned
+
+MkDir /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_output/thinned (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    /bin/mkdir -p /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_output/thinned
+
+GenerateAssetSymbols /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/Assets.xcassets (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/actool /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/Assets.xcassets --compile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app --output-format human-readable-text --notices --warnings --export-dependency-info /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_dependencies --output-partial-info-plist /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_generated_info.plist --app-icon AppIcon --compress-pngs --enable-on-demand-resources YES --development-region en --target-device iphone --minimum-deployment-target 26.0 --platform iphoneos --bundle-identifier com.luxiangge.goosecam --generate-swift-asset-symbol-extensions NO --generate-swift-asset-symbols /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources/GeneratedAssetSymbols.swift --generate-objc-asset-symbols /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources/GeneratedAssetSymbols.h --generate-asset-symbol-index /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/* com.apple.actool.compilation-results */
+/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources/GeneratedAssetSymbols.h
+/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources/GeneratedAssetSymbols.swift
+
+
+CopyStringsFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/zh-Hans.lproj/InfoPlist.strings /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/zh-Hans.lproj/InfoPlist.strings (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    builtin-copyStrings --validate --outputencoding binary --outfilename InfoPlist.strings --outdir /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/zh-Hans.lproj -- /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/zh-Hans.lproj/InfoPlist.strings
+/Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/zh-Hans.lproj/InfoPlist.strings:1:1: note: detected encoding of input file as Unicode (UTF-8) (in target 'GooseCam' from project 'GooseCam')
+
+CopyStringsFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/en.lproj/InfoPlist.strings /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/en.lproj/InfoPlist.strings (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    builtin-copyStrings --validate --outputencoding binary --outfilename InfoPlist.strings --outdir /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/en.lproj -- /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/en.lproj/InfoPlist.strings
+/Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/en.lproj/InfoPlist.strings:1:1: note: detected encoding of input file as Unicode (UTF-8) (in target 'GooseCam' from project 'GooseCam')
+
+CompileAssetCatalogVariant thinned /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/Assets.xcassets (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    /Applications/Xcode_26.6.app/Contents/Developer/usr/bin/actool /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/Assets.xcassets --compile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_output/thinned --output-format human-readable-text --notices --warnings --export-dependency-info /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_dependencies_thinned --output-partial-info-plist /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_generated_info.plist_thinned --app-icon AppIcon --compress-pngs --enable-on-demand-resources YES --development-region en --target-device iphone --minimum-deployment-target 26.0 --platform iphoneos
+/* com.apple.actool.compilation-results */
+/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_generated_info.plist_thinned
+/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_output/thinned/AppIcon60x60@2x.png
+/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_output/thinned/AppIcon76x76@2x~ipad.png
+/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_output/thinned/Assets.car
+
+
+SwiftDriver GooseCam normal arm64 com.apple.xcode.tools.swift.compiler (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    builtin-SwiftDriver -- /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name GooseCam -O -whole-module-optimization @/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.SwiftFileList -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios26.0 -g -module-cache-path /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex -Xfrontend -serialize-debugging-options -swift-version 5 -I /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos -F /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos -c -num-threads 4 -Xcc -ivfsstatcache -Xcc /Users/runner/work/goosecam-ios/goosecam-ios/build/SDKStatCaches.noindex/iphoneos26.5-23F81a-688ef53f1462e2c8f657fdc38a81448fee66e23052a0157c865c76b268046726.sdkstatcache -output-file-map /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex -sdk-module-cache-path /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam_const_extract_protocols.json -Xcc -iquote -Xcc /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-generated-files.hmap -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-own-target-headers.hmap -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-all-target-headers.hmap -Xcc -iquote -Xcc /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-project-headers.hmap -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/include -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources-normal/arm64 -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources/arm64 -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources -emit-objc-header -emit-objc-header-path /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam-Swift.h -working-directory /Users/runner/work/goosecam-ios/goosecam-ios -no-emit-module-separately-wmo
+
+SwiftDriver\ Compilation GooseCam normal arm64 com.apple.xcode.tools.swift.compiler (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    builtin-Swift-Compilation -- /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name GooseCam -O -whole-module-optimization @/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.SwiftFileList -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios26.0 -g -module-cache-path /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex -Xfrontend -serialize-debugging-options -swift-version 5 -I /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos -F /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos -c -num-threads 4 -Xcc -ivfsstatcache -Xcc /Users/runner/work/goosecam-ios/goosecam-ios/build/SDKStatCaches.noindex/iphoneos26.5-23F81a-688ef53f1462e2c8f657fdc38a81448fee66e23052a0157c865c76b268046726.sdkstatcache -output-file-map /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex -sdk-module-cache-path /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam_const_extract_protocols.json -Xcc -iquote -Xcc /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-generated-files.hmap -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-own-target-headers.hmap -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-all-target-headers.hmap -Xcc -iquote -Xcc /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-project-headers.hmap -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/include -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources-normal/arm64 -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources/arm64 -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources -emit-objc-header -emit-objc-header-path /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam-Swift.h -working-directory /Users/runner/work/goosecam-ios/goosecam-ios -no-emit-module-separately-wmo
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/DeveloperToolsSupport-3EKMK5OR0A8LOCN5A8TKQ5W93.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_AvailabilityInternal-DBCCHAJ9H130LJIYB3BK11N8J.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_stddef-EZLW3RWUEH2JCAOWKQLQ23GJB.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_stdarg-CCT9350ISEB2H37QDI34V04CF.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_stdbool-8V4WIN3EN4TTYLV2G9AO9O4MG.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_float-P72EVQ1CACSVNY7BG2K3POSR.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_SwiftConcurrencyShims-DNHEVQH8URZGLVF5Y464YY4E.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/ptrcheck-4UODB8J21J7CODTG52LHO25K5.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/SwiftShims-5S4WV47YSGRAX91D96OMYQ2MX.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_DarwinFoundation1-9AN7CGDFBMA92OMP736D75QKE.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/ptrauth-DMBYX5VAMJ4H4L4BL0C9P14AZ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_limits-7ERU6G6BPXSRLIXOSM2ZWTOJW.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/ExtensionFoundation-ETDELNL7P5RB0JMR48THLLJ8T.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_DarwinFoundation2-7850TI20WOK8539U9M4IQGCJ3.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_stdint-EKFS746UV59MS1ZT2JWWOGWFH.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/sys_types-AM5J5A6IJ4IOM318U1VE5ICM3.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_tgmath-1V3Y6DJ7FBP3S9DK7GDRWLLHY.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_stdatomic-7HNLGTCAN6M4C4YV6E0BNN47S.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_DarwinFoundation3-77OU1EM9K413U72H1Q6CC4WGP.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_intrinsics-15HRK4340DW9JJB0QDH53S10D.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_inttypes-2NEI3DUIHTKYI961K47Q90ZGO.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Darwin-GVLCRMXXGPDDLI0NJJDWJ8YY.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/simd-9MO3LJYTD2NCY9L5HYDGSRJUK.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/MachO-CKPWMNQ8AKLBMLBUIS9JQAXH8.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/ObjectiveC-6M0WBOL414FUYSB5CZURRQQWS.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/os_object-850P16UOMYL61GS5E8RM35ZH2.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/os_workgroup-MNWUXTSHD6W6DEICQPJZXUP.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Dispatch-8235MEBNU8N4R49GOBV4K46ME.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/dnssd-3UNB1X4WKT0WIPIW34M7WT2G8.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreFoundation-5MSSN88IPSUZI7PT6AWPIOLTU.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/XPC-B8IWUPCRE9PHREKFRU65KVYHG.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/os-DG2HUQ8633SPVBL4M3HVT766G.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CFNetwork-6OKUOU1SYPN7JAQOOWLEQMDXI.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreAudioTypes-83LJIHLTYO998QMG1SR6O8673.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Spatial-CVPVI6PI9EZV1L7W4YC8Q69M8.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Security-BTZ6XE5ZLRT6NUC51ZF0X8H4L.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreAudio-DWOJXTG9HRIY2C4I8PRV7KK5C.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreGraphics-EZS7AVAJ7BR9CHUTF81NSK0MN.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Foundation-DYF6S784435H3HHKXXJEH0MBB.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/ImageIO-6HP2IX7LFAU1BJIKNO7BVP7UY.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreText-5CMPO2KHF112Y8CBX5FUUC46T.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/UIUtilities-8T8FUTDHYPQI3BVZRIHXR06H9.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/DataDetection-3UN0URTAWK80GE3E9KBR94WSP.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/FileProvider-EXQ3443XC4NV7WX3P68SG0N8Q.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_LocationEssentials-99361W0XMNQMPGJ98VOFHM6M0.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/UniformTypeIdentifiers-AD1I8KO85FUBUKQ7TZVKSCHY.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Accessibility-7Y6BPGMCKCEZJHK5W2GKY1AUA.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreTransferable-49DISKN06NISL894I6G95HI4N.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreLocation-ETKDEALXZH00SIZPVJYBPYL99.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Network-2TO4BE25Q2N1VBO2DFB2JHYKM.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/OSLog-6LL3Z4XDTNP65C64MR5D665J4.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreMIDI-8DQXD25DSSDCMHFL0I21WQGXL.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Symbols-3HM9OFLHVT9WOB4NOB3C0O3NN.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreMotion-C6N3R206I3LJR5QSMJ1D46MX.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/IOSurface-73JAJWMNH1U80KNJJ9YL3YMII.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/UserNotifications-3VLTS7FXIAXY653C95QILHYNB.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/AVRouting-BHTPG7TQNXGANY70U9V2HTHJ1.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/AudioToolbox-BKCJHYB3382W48FLUITNGS30U.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Metal-AZ7TZTYQET310KM0EN5FWMC4P.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/OpenGLES-5HGMV8A3VOU4VU1ECI44CMKVF.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreData-6Y336ZH4FZ144ZMG97TGPE3SG.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreVideo-ER8O3FMQV4POGD0GPTBH0QAJT.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/QuartzCore-89Q8G0KU14EN9RUL9N0AA8DID.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreMedia-DZR2YSJ2GTTDVC6AX00P1HFJF.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreImage-B3PBGZ4R6LXWZOB5FOOJ901V9.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/SwiftUICore-DQ8X5ZIKO3NJY39ULK8FW806K.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/UIKit-BNAZPO29V7C9BRIBNQ4AWGVEZ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/MediaToolbox-683S1EARLGZ6JO19N33VGY4KP.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/AVFAudio-2LT0NACLHN5KAYGXZQE25FXMX.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/AVFoundation-33FN5E1FV4PRFGVIOXQ59TTP.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Photos-EA06IHJUOHQWCCA2XJGTH7XDF.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/PhotosUI-CCVAVOONQ3OSFZXH8GJTG07UB.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/SwiftUI-A2TEVSZYJPD46I0QYMT3B7NM2.pcm
+
+SwiftCompile normal arm64 Compiling\ CameraPreview.swift,\ CameraScreen.swift,\ CameraSession.swift,\ Diag.swift,\ GalleryView.swift,\ GooseCamApp.swift,\ Lang.swift,\ M72Filter.swift,\ PhotoStore.swift,\ SettingsView.swift,\ Views.swift,\ GeneratedAssetSymbols.swift /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/CameraPreview.swift /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/CameraScreen.swift /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/CameraSession.swift /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/Diag.swift /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/GalleryView.swift /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/GooseCamApp.swift /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/Lang.swift /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/M72Filter.swift /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/PhotoStore.swift /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/SettingsView.swift /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/Views.swift /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources/GeneratedAssetSymbols.swift /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/UIKit.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/_PhotosUI_SwiftUI.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/OSLog.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Metal.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreFoundation.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/DataDetection.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Distributed.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/_DarwinFoundation2.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/PhotosUI.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Foundation.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/ObjectiveC.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/AVFoundation.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Network.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreVideo.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/ExtensionFoundation.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreGraphics.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Darwin.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreMedia.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Observation.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreMIDI.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/UniformTypeIdentifiers.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Synchronization.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/XPC.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreText.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreAudio.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreLocation.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/LightweightCodeRequirements.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/DeveloperToolsSupport.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Photos.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Accessibility.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreMotion.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/_Concurrency.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreData.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/AudioToolbox.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreTransferable.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/_DarwinFoundation1.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Swift.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/AVFAudio.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/FileProvider.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/simd.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/_StringProcessing.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/os.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreImage.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Symbols.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/SwiftUICore.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Spatial.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/_Builtin_float.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Dispatch.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/SwiftUI.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/QuartzCore.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/_DarwinFoundation3.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Combine.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/System.swiftmodule/arm64e-apple-ios.swiftmodule /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_stdatomic-7HNLGTCAN6M4C4YV6E0BNN47S.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_stdint-EKFS746UV59MS1ZT2JWWOGWFH.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_inttypes-2NEI3DUIHTKYI961K47Q90ZGO.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Foundation-DYF6S784435H3HHKXXJEH0MBB.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_DarwinFoundation2-7850TI20WOK8539U9M4IQGCJ3.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreAudio-DWOJXTG9HRIY2C4I8PRV7KK5C.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/MachO-CKPWMNQ8AKLBMLBUIS9JQAXH8.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Dispatch-8235MEBNU8N4R49GOBV4K46ME.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/AVFoundation-33FN5E1FV4PRFGVIOXQ59TTP.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreAudioTypes-83LJIHLTYO998QMG1SR6O8673.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Security-BTZ6XE5ZLRT6NUC51ZF0X8H4L.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/FileProvider-EXQ3443XC4NV7WX3P68SG0N8Q.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_intrinsics-15HRK4340DW9JJB0QDH53S10D.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_tgmath-1V3Y6DJ7FBP3S9DK7GDRWLLHY.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreTransferable-49DISKN06NISL894I6G95HI4N.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/OSLog-6LL3Z4XDTNP65C64MR5D665J4.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/AVFAudio-2LT0NACLHN5KAYGXZQE25FXMX.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/sys_types-AM5J5A6IJ4IOM318U1VE5ICM3.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Symbols-3HM9OFLHVT9WOB4NOB3C0O3NN.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_DarwinFoundation1-9AN7CGDFBMA92OMP736D75QKE.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/PhotosUI-CCVAVOONQ3OSFZXH8GJTG07UB.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_stddef-EZLW3RWUEH2JCAOWKQLQ23GJB.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/UniformTypeIdentifiers-AD1I8KO85FUBUKQ7TZVKSCHY.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreMedia-DZR2YSJ2GTTDVC6AX00P1HFJF.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/dnssd-3UNB1X4WKT0WIPIW34M7WT2G8.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/IOSurface-73JAJWMNH1U80KNJJ9YL3YMII.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/AudioToolbox-BKCJHYB3382W48FLUITNGS30U.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/DataDetection-3UN0URTAWK80GE3E9KBR94WSP.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/ImageIO-6HP2IX7LFAU1BJIKNO7BVP7UY.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/SwiftUI-A2TEVSZYJPD46I0QYMT3B7NM2.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/AVRouting-BHTPG7TQNXGANY70U9V2HTHJ1.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Darwin-GVLCRMXXGPDDLI0NJJDWJ8YY.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_float-P72EVQ1CACSVNY7BG2K3POSR.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_stdarg-CCT9350ISEB2H37QDI34V04CF.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Spatial-CVPVI6PI9EZV1L7W4YC8Q69M8.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/os-DG2HUQ8633SPVBL4M3HVT766G.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Accessibility-7Y6BPGMCKCEZJHK5W2GKY1AUA.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreFoundation-5MSSN88IPSUZI7PT6AWPIOLTU.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/ptrcheck-4UODB8J21J7CODTG52LHO25K5.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/ptrauth-DMBYX5VAMJ4H4L4BL0C9P14AZ.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Network-2TO4BE25Q2N1VBO2DFB2JHYKM.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_limits-7ERU6G6BPXSRLIXOSM2ZWTOJW.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreVideo-ER8O3FMQV4POGD0GPTBH0QAJT.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/UIKit-BNAZPO29V7C9BRIBNQ4AWGVEZ.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_SwiftConcurrencyShims-DNHEVQH8URZGLVF5Y464YY4E.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/os_workgroup-MNWUXTSHD6W6DEICQPJZXUP.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreMIDI-8DQXD25DSSDCMHFL0I21WQGXL.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreImage-B3PBGZ4R6LXWZOB5FOOJ901V9.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/OpenGLES-5HGMV8A3VOU4VU1ECI44CMKVF.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/os_object-850P16UOMYL61GS5E8RM35ZH2.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/DeveloperToolsSupport-3EKMK5OR0A8LOCN5A8TKQ5W93.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/SwiftUICore-DQ8X5ZIKO3NJY39ULK8FW806K.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_LocationEssentials-99361W0XMNQMPGJ98VOFHM6M0.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/UIUtilities-8T8FUTDHYPQI3BVZRIHXR06H9.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreText-5CMPO2KHF112Y8CBX5FUUC46T.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/QuartzCore-89Q8G0KU14EN9RUL9N0AA8DID.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/MediaToolbox-683S1EARLGZ6JO19N33VGY4KP.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreLocation-ETKDEALXZH00SIZPVJYBPYL99.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/ObjectiveC-6M0WBOL414FUYSB5CZURRQQWS.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreData-6Y336ZH4FZ144ZMG97TGPE3SG.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreGraphics-EZS7AVAJ7BR9CHUTF81NSK0MN.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Photos-EA06IHJUOHQWCCA2XJGTH7XDF.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_Builtin_stdbool-8V4WIN3EN4TTYLV2G9AO9O4MG.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/UserNotifications-3VLTS7FXIAXY653C95QILHYNB.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/SwiftShims-5S4WV47YSGRAX91D96OMYQ2MX.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CoreMotion-C6N3R206I3LJR5QSMJ1D46MX.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Metal-AZ7TZTYQET310KM0EN5FWMC4P.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/CFNetwork-6OKUOU1SYPN7JAQOOWLEQMDXI.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/XPC-B8IWUPCRE9PHREKFRU65KVYHG.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_DarwinFoundation3-77OU1EM9K413U72H1Q6CC4WGP.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/simd-9MO3LJYTD2NCY9L5HYDGSRJUK.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/_AvailabilityInternal-DBCCHAJ9H130LJIYB3BK11N8J.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/ExtensionFoundation-ETDELNL7P5RB0JMR48THLLJ8T.pcm /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam-dependencies-1.json (in target 'GooseCam' from project 'GooseCam')
+CompileSwift normal arm64 (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    
+/Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/CameraScreen.swift:65:10: warning: 'onChange(of:perform:)' was deprecated in iOS 17.0: Use `onChange` with a two or zero parameter action closure instead.
+        .onChange(of: camera.lastError) { value in
+         ^
+/Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/M72Filter.swift:137:16: warning: 'prefersExtendedRange' was deprecated in iOS 12.0: Use the preferredRange property instead
+        format.prefersExtendedRange = false
+               ^
+/Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/SettingsView.swift:150:10: warning: 'onChange(of:perform:)' was deprecated in iOS 17.0: Use `onChange` with a two or zero parameter action closure instead.
+        .onChange(of: pickerItems) { newItems in
+         ^
+/Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/SettingsView.swift:123:57: warning: main actor-isolated property 'processing' can not be referenced from a Sendable closure
+                                Capsule().fill(importer.processing
+                                                        ^
+/Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/SettingsView.swift:252:20: note: property declared here
+    @Published var processing = false
+                   ^
+
+LinkAssetCatalog /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/Assets.xcassets (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    builtin-linkAssetCatalog --thinned /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_output/thinned --thinned-dependencies /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_dependencies_thinned --thinned-info-plist-content /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_generated_info.plist_thinned --unthinned /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_output/unthinned --unthinned-dependencies /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_dependencies_unthinned --unthinned-info-plist-content /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_generated_info.plist_unthinned --output /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app --plist-output /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_generated_info.plist
+note: Emplaced /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/AppIcon60x60@2x.png (in target 'GooseCam' from project 'GooseCam')
+note: Emplaced /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/Assets.car (in target 'GooseCam' from project 'GooseCam')
+note: Emplaced /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/AppIcon76x76@2x~ipad.png (in target 'GooseCam' from project 'GooseCam')
+
+ProcessInfoPlistFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/Info.plist /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/Info.plist (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    builtin-infoPlistUtility /Users/runner/work/goosecam-ios/goosecam-ios/GooseCam/Info.plist -producttype com.apple.product-type.application -genpkginfo /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/PkgInfo -expandbuildsettings -format binary -platform iphoneos -additionalcontentfile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/assetcatalog_generated_info.plist -requiredArchitecture arm64 -o /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/Info.plist
+
+SwiftDriverJobDiscovery normal arm64 Compiling CameraPreview.swift, CameraScreen.swift, CameraSession.swift, Diag.swift, GalleryView.swift, GooseCamApp.swift, Lang.swift, M72Filter.swift, PhotoStore.swift, SettingsView.swift, Views.swift, GeneratedAssetSymbols.swift (in target 'GooseCam' from project 'GooseCam')
+
+SwiftDriver\ Compilation\ Requirements GooseCam normal arm64 com.apple.xcode.tools.swift.compiler (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name GooseCam -O -whole-module-optimization @/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.SwiftFileList -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios26.0 -g -module-cache-path /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex -Xfrontend -serialize-debugging-options -swift-version 5 -I /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos -F /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos -c -num-threads 4 -Xcc -ivfsstatcache -Xcc /Users/runner/work/goosecam-ios/goosecam-ios/build/SDKStatCaches.noindex/iphoneos26.5-23F81a-688ef53f1462e2c8f657fdc38a81448fee66e23052a0157c865c76b268046726.sdkstatcache -output-file-map /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex -sdk-module-cache-path /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/runner/work/goosecam-ios/goosecam-ios/build/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam_const_extract_protocols.json -Xcc -iquote -Xcc /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-generated-files.hmap -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-own-target-headers.hmap -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-all-target-headers.hmap -Xcc -iquote -Xcc /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam-project-headers.hmap -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/include -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources-normal/arm64 -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources/arm64 -Xcc -I/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources -emit-objc-header -emit-objc-header-path /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam-Swift.h -working-directory /Users/runner/work/goosecam-ios/goosecam-ios -no-emit-module-separately-wmo
+
+SwiftMergeGeneratedHeaders /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources/GooseCam-Swift.h /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam-Swift.h (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    builtin-swiftHeaderTool -arch arm64 /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam-Swift.h -o /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/DerivedSources/GooseCam-Swift.h
+
+Copy /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.swiftmodule/arm64-apple-ios.abi.json /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.abi.json (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.abi.json /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.swiftmodule/arm64-apple-ios.abi.json
+
+Copy /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.swiftmodule/arm64-apple-ios.swiftmodule /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.swiftmodule (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.swiftmodule /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.swiftmodule/arm64-apple-ios.swiftmodule
+
+Copy /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.swiftmodule/arm64-apple-ios.swiftdoc /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.swiftdoc (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.swiftdoc /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.swiftmodule/arm64-apple-ios.swiftdoc
+
+Copy /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.swiftsourceinfo (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.swiftsourceinfo /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo
+
+Ld /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/GooseCam normal (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios26.0 -isysroot /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -Os -L/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/EagerLinkingTBDs/Release-iphoneos -L/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos -F/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/EagerLinkingTBDs/Release-iphoneos -F/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos -filelist /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.LinkFileList -Xlinker -rpath -Xlinker @executable_path/Frameworks -Xlinker -dead_strip -Xlinker -object_path_lto -Xlinker /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam_lto.o -Xlinker -dependency_info -Xlinker /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam_dependency_info.dat -fobjc-link-runtime -L/Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.swiftmodule @/Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam-linker-args.resp -o /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/GooseCam
+
+CopySwiftLibs /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    builtin-swiftStdLibTool --copy --verbose --scan-executable /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/GooseCam --scan-folder /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/Frameworks --scan-folder /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/PlugIns --scan-folder /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/SystemExtensions --scan-folder /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/Extensions --platform iphoneos --toolchain /Users/runner/Library/Developer/DVTDownloads/MetalToolchain/mounts/5f4a441a6d0a11f2e9b28c67384263afe92320f7/Metal.xctoolchain --toolchain /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+Ignoring --strip-bitcode because --sign was not passed
+
+ExtractAppIntentsMetadata (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsmetadataprocessor --toolchain-dir /Users/runner/Library/Developer/DVTDownloads/MetalToolchain/mounts/5f4a441a6d0a11f2e9b28c67384263afe92320f7/Metal.xctoolchain --module-name GooseCam --sdk-root /Applications/Xcode_26.6.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk --xcode-version 17F113 --platform-family iOS --deployment-target 26.0 --bundle-identifier com.luxiangge.goosecam --output /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app --target-triple arm64-apple-ios26.0 --binary-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/GooseCam --dependency-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam_dependency_info.dat --stringsdata-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/ExtractedAppShortcutsMetadata.stringsdata --source-file-list /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.SwiftFileList --metadata-file-list /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam.DependencyMetadataFileList --static-metadata-file-list /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam.DependencyStaticMetadataFileList --swift-const-vals-list /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/Objects-normal/arm64/GooseCam.SwiftConstValuesFileList --compile-time-extraction --deployment-aware-processing --validate-assistant-intents --no-app-shortcuts-localization
+2026-11-18 04:40:28.709 appintentsmetadataprocessor[17778:51783] Starting appintentsmetadataprocessor export
+2026-11-18 04:40:28.763 appintentsmetadataprocessor[17778:51783] warning: Metadata extraction skipped. No AppIntents.framework dependency found.
+
+GenerateDSYMFile /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app.dSYM /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/GooseCam (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/dsymutil /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/GooseCam -o /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app.dSYM
+
+AppIntentsSSUTraining (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    /Applications/Xcode_26.6.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsnltrainingprocessor --infoplist-path /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/Info.plist --temp-dir-path /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/ssu --bundle-id com.luxiangge.goosecam --product-path /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app --extracted-metadata-path /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/Metadata.appintents --metadata-file-list /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Intermediates.noindex/GooseCam.build/Release-iphoneos/GooseCam.build/GooseCam.DependencyMetadataFileList --source-file /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app/Info.plist --archive-ssu-assets
+2026-11-18 04:40:28.931 appintentsnltrainingprocessor[17791:51814] Parsing options for appintentsnltrainingprocessor
+2026-11-18 04:40:28.934 appintentsnltrainingprocessor[17791:51814] Starting AppIntents SSU YAML Generation
+2026-11-18 04:40:29.023 appintentsnltrainingprocessor[17791:51814] No AppShortcuts found - Skipping.
+
+RegisterExecutionPolicyException /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    builtin-RegisterExecutionPolicyException /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app
+
+Validate /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    builtin-validationUtility /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app -shallow-bundle -infoplist-subpath Info.plist
+
+Touch /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app (in target 'GooseCam' from project 'GooseCam')
+    cd /Users/runner/work/goosecam-ios/goosecam-ios
+    /usr/bin/touch -c /Users/runner/work/goosecam-ios/goosecam-ios/build/Build/Products/Release-iphoneos/GooseCam.app
+
+** BUILD SUCCEEDED **
+
