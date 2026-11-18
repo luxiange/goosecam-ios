@@ -142,32 +142,21 @@ enum M72Filter {
     }
 
     /// Bayer RAW（DNG）解码。
-    /// 关键点：CIRAWFilter 里把 Apple 的自动局部色调映射、锐化、降噪全部关掉，
-    /// 并在 sRGB 的工作/输出色彩空间里渲染——否则 createCGImage 会按扩展线性空间输出，
-    /// 画面就会整体“发白、发灰、泛亮”，这就是 0.41 泛白的根因之一。
+    /// 关键点：解码只负责“拿到干净底子”，塑形全部交给下面的内核。
+    /// CIContext 显式把工作/输出色彩空间固定成 sRGB——默认的扩展线性工作空间会让
+    /// createCGImage 直出“发白、发灰、泛亮”的画面（0.41 泛白的根因之一）。
     static func developRaw(_ data: Data) -> UIImage? {
-        var ci: CIImage?
-        if let filter = CIRAWFilter(imageData: data) {
-            filter.isLensCorrectionEnabled = true
-            filter.isGamutMappingEnabled = true
-            filter.isHighlightRecoveryEnabled = true
-            if filter.isLocalToneMapSupported { filter.isLocalToneMapEnabled = false }
-            if filter.isNoiseReductionSupported { filter.isNoiseReductionEnabled = false }
-            if filter.isSharpnessSupported { filter.isSharpnessEnabled = false }
-            filter.isDraftModeEnabled = false
-            ci = filter.outputImage
-            Diag.mark("raw.cirawfilter ok")
+        let tmp = FileManager.default.temporaryDirectory
+            .appendingPathComponent("goose_\(UUID().uuidString).dng")
+        do {
+            try data.write(to: tmp)
+        } catch {
+            Diag.mark("raw.write FAILED \(error.localizedDescription)")
+            return nil
         }
-        if ci == nil {
-            let tmp = FileManager.default.temporaryDirectory
-                .appendingPathComponent("goose_\(UUID().uuidString).dng")
-            if (try? data.write(to: tmp)) != nil {
-                ci = CIImage(contentsOf: tmp, options: [.applyOrientationProperty: true])
-                try? FileManager.default.removeItem(at: tmp)
-            }
-            Diag.mark("raw.decode fallback ciimage")
-        }
-        guard let image = ci else {
+        defer { try? FileManager.default.removeItem(at: tmp) }
+
+        guard let image = CIImage(contentsOf: tmp, options: [.applyOrientationProperty: true]) else {
             Diag.mark("raw.decode FAILED")
             return nil
         }
