@@ -11,38 +11,43 @@ enum Diag {
         return f
     }()
 
-    static var fileURL: URL? {
+    static var logURL: URL? {
         let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let folder = docs.appendingPathComponent("goosecam", isDirectory: true)
         try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         return folder.appendingPathComponent("diag.log")
     }
 
-    static func mark(_ text: String) {
-        queue.async {
-            guard let url = fileURL else { return }
-            let line = "[\(formatter.string(from: Date()))] \(text)\n"
-            guard let data = line.data(using: .utf8) else { return }
-            if let handle = try? FileHandle(forWritingTo: url) {
-                handle.seekToEndOfFile()
-                handle.write(data)
-                try? handle.close()
-            } else {
-                try? data.write(to: url)
-            }
-            // 只保留最近约 100KB
-            if let attrs = try? FileManager.default.attributesOfItem(atPath: url.path),
-               let size = attrs[.size] as? Int, size > 200_000,
-               let content = try? Data(contentsOf: url) {
-                try? content.suffix(100_000).write(to: url)
-            }
+    /// 同步写一行（异常处理器里也安全）
+    static func writeLine(_ text: String) {
+        guard let url = logURL else { return }
+        let line = "[\(formatter.string(from: Date()))] \(text)\n"
+        guard let data = line.data(using: .utf8) else { return }
+        if let handle = try? FileHandle(forWritingTo: url) {
+            handle.seekToEndOfFile()
+            handle.write(data)
+            try? handle.close()
+        } else {
+            try? data.write(to: url)
+        }
+        if let attrs = try? FileManager.default.attributesOfItem(atPath: url.path),
+           let size = attrs[.size] as? Int, size > 200_000,
+           let content = try? Data(contentsOf: url) {
+            try? content.suffix(100_000).write(to: url)
         }
     }
 
-    static func installExceptionLogger() {
-        NSSetUncaughtExceptionHandler { exception in
-            let symbols = exception.callStackSymbols.prefix(12).joined(separator: " | ")
-            mark("UNCAUGHT \(exception.name.rawValue): \(exception.reason ?? "-") \(symbols)")
-        }
+    static func mark(_ text: String) {
+        queue.async { writeLine(text) }
     }
+
+    static func installExceptionLogger() {
+        NSSetUncaughtExceptionHandler(goosecamUncaughtHandler)
+    }
+}
+
+/// 必须是全局函数：闭包捕获上下文时无法转成 C 函数指针
+private func goosecamUncaughtHandler(_ exception: NSException) {
+    let symbols = exception.callStackSymbols.prefix(12).joined(separator: " | ")
+    Diag.writeLine("UNCAUGHT \(exception.name.rawValue): \(exception.reason ?? "-") \(symbols)")
 }
