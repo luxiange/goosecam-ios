@@ -542,8 +542,10 @@ enum M72Filter {
             let row = y * W
             for x in 0..<W {
                 if x >= ix0 && x < ix1 && y >= iy0 && y < iy1 { continue }
-                let innerDist = min(min(abs(x - ix0), abs(x - (ix1 - 1))),
-                                    min(abs(y - iy0), abs(y - (iy1 - 1)))
+                let innerDist = min(
+                    min(abs(x - ix0), abs(x - (ix1 - 1))),
+                    min(abs(y - iy0), abs(y - (iy1 - 1)))
+                )
                 let corner = min(min(x, y), min(W - 1 - x, H - 1 - y))
                 rng = rng &* 6364136223846793005 &+ 1442695040888963407
                 var v = Int(rng >> 33) % 11
