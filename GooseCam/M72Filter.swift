@@ -141,22 +141,47 @@ enum M72Filter {
         return rendered.cgImage
     }
 
-    /// Bayer RAW（DNG）解码。
-    /// 关键点：解码只负责“拿到干净底子”，塑形全部交给下面的内核。
-    /// CIContext 显式把工作/输出色彩空间固定成 sRGB——默认的扩展线性工作空间会让
-    /// createCGImage 直出“发白、发灰、泛亮”的画面（0.41 泛白的根因之一）。
+    /// Bayer RAW（DNG）解码 → 只留“解马赛克 + 白平衡”，其余塑形权全部交给我们自己的内核。
+    ///
+    /// 这是模拟 gloam 的核心一步。iPhone 的默认 RAW 渲染会自己叠加一堆“相机厂味道”：
+    /// 局部色调映射（把高光压平、暗部提亮）、全局 boost 曲线、边缘局部对比、锐化、降噪。
+    /// 这些正是画面“发灰、发平、不润”的根源，而且和我们的胶片曲线互相打架。
+    /// 所以这里把它们的量全部归零，只保留：解马赛克、镜头校正、色域映射、拍摄时的白平衡。
     static func developRaw(_ data: Data) -> UIImage? {
-        let tmp = FileManager.default.temporaryDirectory
-            .appendingPathComponent("goose_\(UUID().uuidString).dng")
-        do {
-            try data.write(to: tmp)
-        } catch {
-            Diag.mark("raw.write FAILED \(error.localizedDescription)")
-            return nil
-        }
-        defer { try? FileManager.default.removeItem(at: tmp) }
+        var ci: CIImage?
+        if let filter = CIRAWFilter(imageData: data) {
+            filter.isDraftModeEnabled = false
+            filter.isLensCorrectionEnabled = true
+            filter.isGamutMappingEnabled = true
 
-        guard let image = CIImage(contentsOf: tmp, options: [.applyOrientationProperty: true]) else {
+            // 关掉 Apple 的自动影调：这些会把高光压平、暗部抬起，画面立刻变平
+            filter.extendedDynamicRangeAmount = 0
+            filter.boostAmount = 0
+            filter.boostShadowAmount = 0
+            filter.contrastAmount = 0          // 边缘局部对比（“塑料感”来源）
+            filter.detailAmount = 0
+            filter.moireReductionAmount = 0
+            if filter.isLocalToneMapSupported { filter.localToneMapAmount = 0 }
+            // 关掉自动降噪/锐化：我们要的是 RAW 的原始质感，颗粒后面自己加
+            if filter.isColorNoiseReductionSupported { filter.colorNoiseReductionAmount = 0 }
+            if filter.isLuminanceNoiseReductionSupported { filter.luminanceNoiseReductionAmount = 0 }
+            if filter.isSharpnessSupported { filter.sharpnessAmount = 0 }
+            // 高光恢复也关掉，让高光自然滚落，由我们的 shoulder 曲线接管
+            if filter.isHighlightRecoverySupported { filter.isHighlightRecoveryEnabled = false }
+
+            ci = filter.outputImage
+            Diag.mark("raw.cirawfilter ok toneMap=\(filter.isLocalToneMapSupported ? "0" : "n/a")")
+        }
+        if ci == nil {
+            let tmp = FileManager.default.temporaryDirectory
+                .appendingPathComponent("goose_\(UUID().uuidString).dng")
+            if (try? data.write(to: tmp)) != nil {
+                ci = CIImage(contentsOf: tmp, options: [.applyOrientationProperty: true])
+                try? FileManager.default.removeItem(at: tmp)
+            }
+            Diag.mark("raw.decode fallback ciimage")
+        }
+        guard let image = ci else {
             Diag.mark("raw.decode FAILED")
             return nil
         }
@@ -169,6 +194,7 @@ enum M72Filter {
 
         let normalized = image.transformed(by: CGAffineTransform(translationX: -extent.origin.x,
                                                                 y: -extent.origin.y))
+        // 显式 sRGB 工作/输出空间：默认的扩展线性空间会让 createCGImage 直出“发白泛亮”的画面
         let ctx = CIContext(options: [
             .cacheIntermediates: false,
             .workingColorSpace: colorSpace,
