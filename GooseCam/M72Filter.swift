@@ -2,17 +2,19 @@ import UIKit
 import CoreGraphics
 import CoreImage
 
-/// Gloam M72 风格处理（0.41 版：按 gloam 样片重新标定的胶片曲线）。
+/// Gloam M72 风格（v0.50 全新内核，推倒重来）。
 ///
-/// 与 0.40 的区别：0.40 是在安卓 JPG 上调出来的“自适应微调”打法，
-/// 在 iPhone 上因为 Apple 已经把 JPEG 拉亮/锐化/降噪，再叠那套只会更灰更亮。
-/// 0.41 改成以 gloam 样片为基准标定出来的**固定胶片曲线**：
-///   1) 曝光基准 ×1.05；
-///   2) 高光肩部（>0.56 用二次衰减压回去，gloam 的 p90 只有 160，而我们原来 197）；
-///   3) 黑位脚部（暗部再压 0.03，gloam 的 p10 是 13，我们原来 21）；
-///   4) 分色段乘性偏色：暗部偏暖褐（B×0.80）、高光偏奶油（B×0.94）；
-///   5) 冷相收敛、颗粒、暗角、黑边。
-/// 全部在自建位图上直接算，不依赖 UIGraphicsImageRenderer 的 cgContext.data。
+/// 设计依据：对 gloam 官方样片 + 用户实拍样片（共 17 张）做定量分析后归纳出的“中画幅负片”特征：
+///   1) 中调稳、反差柔：中位亮度落在 0.40~0.46，高光从 0.66 起用 2.4 次幂平滑滚落（奶油白），
+///      暗部保留密度不再硬压黑；
+///   2) 饱和度软膝：低饱和几乎不动，浓色按二次衰减收回来（最高约 0.55，不会数码味直冲）；
+///   3) 色相微旋：黄绿/绿向青绿偏 8°，蓝向青偏 -4°，红橙略加饱和（M72 的红是暖砖红）；
+///   4) 分区偏色：高光暖奶油（R+2%/B-1.4%），暗部极轻的冷中性（B+1%/R-0.6%）；
+///   5) 润：高光辉光（半径约画面 0.3%）+ 中高频反差轻微收敛 + 细颗粒（亮部更弱）；
+///   6) 轻暗角 + 黑边框。
+///
+/// RAW 侧：CIRAWFilter 关掉 Apple 的局部色调映射/锐化/降噪，在 sRGB 工作与输出空间里渲染，
+/// 拿到的是“干净、线性、未被系统拉亮”的底子，再由本内核塑形。
 enum M72Filter {
 
     private static let targetRatio = 4.0 / 5.0
@@ -20,31 +22,16 @@ enum M72Filter {
 
     // MARK: - 对外流水线
 
-    /// 拍照：4:5 居中裁切 → M72 调色 → 黑边框
-    /// debugSave=true 时把“调色前”的底图存到 Documents/goosecam/debug/pre.jpg，供离线标定用
+    /// 拍照：4:5 居中裁切 → M72 内核 → 黑边框
     static func processPhoto(_ image: UIImage, debugSave: Bool = false) -> UIImage? {
         guard let raster = rasterize(image, cropTo45: true, standardSize: nil) else { return nil }
         defer { raster.dispose() }
         if debugSave { dumpDebug(raster) }
-        guard grade(raster) else { return nil }
-        softSharpen(raster, soft: 0.06, sharpen: 0.18)
-        bloom(raster, threshold: 0.72, strength: 0.08)
-        vignette(raster)
+        guard process(raster) else { return nil }
         return bordered(raster)
     }
 
-    /// 把调色前的底图与统计写盘（只用于标定，正式版可关）
-    private static func dumpDebug(_ r: Raster) {
-        guard let img = r.makeImage(), let data = img.jpegData(compressionQuality: 0.9) else { return }
-        let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("goosecam/debug", isDirectory: true)
-        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        let url = dir.appendingPathComponent("pre.jpg")
-        try? data.write(to: url)
-        Diag.mark("debug.pre saved \(r.width)x\(r.height) -> \(url.lastPathComponent)")
-    }
-
-    /// 导入：4:5 居中裁切（横图 5:4）→ 标准化分辨率 → M72 调色 → 黑边框
+    /// 导入：4:5 居中裁切 → 标准化分辨率 → M72 内核 → 黑边框
     static func processImport(_ image: UIImage) -> UIImage? {
         guard let cropped = rasterize(image, cropTo45: true, standardSize: nil) else { return nil }
         defer { cropped.dispose() }
@@ -60,16 +47,36 @@ enum M72Filter {
         }
         defer { scaled?.dispose() }
 
-        guard grade(work) else { return nil }
-        softSharpen(work, soft: 0.06, sharpen: 0.18)
-        bloom(work, threshold: 0.72, strength: 0.08)
-        vignette(work)
+        guard process(work) else { return nil }
         return bordered(work)
+    }
+
+    /// 完整塑形链路（顺序有讲究：先定调，再上色，再润，最后颗粒/暗角）
+    @discardableResult
+    private static func process(_ r: Raster) -> Bool {
+        let s = measure(r)
+        guard tone(r, s) else { return false }
+        color(r, s)
+        halo(r)
+        micro(r)
+        grain(r, s)
+        vignette(r)
+        return true
+    }
+
+    private static func dumpDebug(_ r: Raster) {
+        guard let img = r.makeImage(), let data = img.jpegData(compressionQuality: 0.9) else { return }
+        let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("goosecam/debug", isDirectory: true)
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let url = dir.appendingPathComponent("pre.jpg")
+        try? data.write(to: url)
+        Diag.mark("debug.pre saved \(r.width)x\(r.height)")
     }
 
     // MARK: - 位图容器
 
-    /// RGBA8（非预乘 alpha 混淆版：alpha 恒为 255）位图，行序自上而下。
+    /// RGBA8 位图（alpha 恒 255），行序自上而下。
     final class Raster {
         let width: Int
         let height: Int
@@ -118,13 +125,10 @@ enum M72Filter {
 
     // MARK: - 栅格化
 
-    /// 取“摆正”的 CGImage：UIImage 带着 EXIF 方向（竖拍通常是 .right / 6）时，
-    /// cgImage 本身是横的原始像素，直接拿它算会把竖拍照片做成横图。
-    /// 这里先在解码阶段按方向重绘成 .up，后续所有裁剪、调色都在正立的像素上做。
+    /// 取“摆正”的 CGImage：UIImage 带 EXIF 方向（竖拍通常 .right）时，cgImage 是横向原始像素，
+    /// 先按方向重绘成 .up，后续裁剪与调色都在正立像素上做。
     private static func cgImage(of image: UIImage) -> CGImage? {
         if image.imageOrientation == .up, let cg = image.cgImage { return cg }
-
-        // image.size 已经是考虑方向后的显示尺寸，按它重绘即可完成旋转
         let size = CGSize(width: max(1, image.size.width * image.scale),
                           height: max(1, image.size.height * image.scale))
         let format = UIGraphicsImageRendererFormat.default()
@@ -137,38 +141,55 @@ enum M72Filter {
         return rendered.cgImage
     }
 
-    /// Bayer RAW（DNG）解码：Core Image 走 RAW 管线做去马赛克与线性化，
-    /// 得到的是未经 JPEG 那种“重度拉亮+锐化+降噪”的原始信息，再交给我们的胶片曲线。
+    /// Bayer RAW（DNG）解码。
+    /// 关键点：CIRAWFilter 里把 Apple 的自动局部色调映射、锐化、降噪全部关掉，
+    /// 并在 sRGB 的工作/输出色彩空间里渲染——否则 createCGImage 会按扩展线性空间输出，
+    /// 画面就会整体“发白、发灰、泛亮”，这就是 0.41 泛白的根因之一。
     static func developRaw(_ data: Data) -> UIImage? {
-        let tmp = FileManager.default.temporaryDirectory
-            .appendingPathComponent("goose_\(UUID().uuidString).dng")
-        do {
-            try data.write(to: tmp)
-        } catch {
-            Diag.mark("raw.write FAILED \(error.localizedDescription)")
-            return nil
+        var ci: CIImage?
+        if let filter = CIRAWFilter(imageData: data) {
+            filter.isLensCorrectionEnabled = true
+            filter.isGamutMappingEnabled = true
+            filter.isHighlightRecoveryEnabled = true
+            if filter.isLocalToneMapSupported { filter.isLocalToneMapEnabled = false }
+            if filter.isNoiseReductionSupported { filter.isNoiseReductionEnabled = false }
+            if filter.isSharpnessSupported { filter.isSharpnessEnabled = false }
+            filter.isDraftModeEnabled = false
+            ci = filter.outputImage
+            Diag.mark("raw.cirawfilter ok")
         }
-        defer { try? FileManager.default.removeItem(at: tmp) }
-
-        let options: [CIImageOption: Any] = [.applyOrientationProperty: true]
-        guard let ci = CIImage(contentsOf: tmp, options: options) else {
+        if ci == nil {
+            let tmp = FileManager.default.temporaryDirectory
+                .appendingPathComponent("goose_\(UUID().uuidString).dng")
+            if (try? data.write(to: tmp)) != nil {
+                ci = CIImage(contentsOf: tmp, options: [.applyOrientationProperty: true])
+                try? FileManager.default.removeItem(at: tmp)
+            }
+            Diag.mark("raw.decode fallback ciimage")
+        }
+        guard let image = ci else {
             Diag.mark("raw.decode FAILED")
             return nil
         }
-        let extent = ci.extent
+
+        let extent = image.extent
         guard extent.width > 16, extent.height > 16 else {
             Diag.mark("raw.extent FAILED \(extent)")
             return nil
         }
-        Diag.mark("raw.decode ok \(Int(extent.width))x\(Int(extent.height))")
 
-        let normalized = ci.transformed(by: CGAffineTransform(translationX: -extent.origin.x,
-                                                             y: -extent.origin.y))
-        let ctx = CIContext(options: [.cacheIntermediates: false])
+        let normalized = image.transformed(by: CGAffineTransform(translationX: -extent.origin.x,
+                                                                y: -extent.origin.y))
+        let ctx = CIContext(options: [
+            .cacheIntermediates: false,
+            .workingColorSpace: colorSpace,
+            .outputColorSpace: colorSpace
+        ])
         guard let cg = ctx.createCGImage(normalized, from: CGRect(origin: .zero, size: extent.size)) else {
             Diag.mark("raw.render FAILED")
             return nil
         }
+        Diag.mark("raw.render ok \(Int(extent.width))x\(Int(extent.height))")
         return UIImage(cgImage: cg, scale: 1, orientation: .up)
     }
 
@@ -211,7 +232,6 @@ enum M72Filter {
         ctx.setFillColor(UIColor.black.cgColor)
         ctx.fill(CGRect(x: 0, y: 0, width: outW, height: outH))
 
-        // 目标缩放比与输出偏移（CGContext 用户空间原点在左下，需换算竖向偏移）
         let sx = CGFloat(outW) / crop.width
         let sy = CGFloat(outH) / crop.height
         let yUp = cgH - crop.maxY
@@ -228,22 +248,31 @@ enum M72Filter {
         return dst
     }
 
-    // MARK: - 调色（0.41 标定曲线）
+    // MARK: - 统计
 
-    /// 两遍式：先统计场景亮度/饱和/色偏，再按固定胶片曲线逐像素处理。
-    @discardableResult
-    static func grade(_ r: Raster) -> Bool {
+    struct Stats {
+        var p1: Double
+        var p2: Double
+        var p5: Double
+        var p10: Double
+        var p50: Double
+        var p90: Double
+        var p95: Double
+        var p99: Double
+        var meanLum: Double
+        var satMean: Double
+        var rbMean: Double
+    }
+
+    private static func measure(_ r: Raster) -> Stats {
         let w = r.width
         let h = r.height
         let px = r.px
         let n = w * h
-        guard n > 16 else { return false }
-
-        // —— 第一遍：统计 ——
-        var lumSum: Double = 0
-        var satSum: Double = 0
-        var rbSum: Double = 0
         var hist = [Int](repeating: 0, count: 256)
+        var lumSum = 0.0
+        var satSum = 0.0
+        var rbSum = 0.0
 
         var i = 0
         while i < n {
@@ -262,208 +291,312 @@ enum M72Filter {
         }
 
         let total = Double(n)
-        let meanLum = lumSum / total
-        let meanSat = satSum / total
-        let meanRb = rbSum / total
+        return Stats(
+            p1: percentile(hist, 0.01, total),
+            p2: percentile(hist, 0.02, total),
+            p5: percentile(hist, 0.05, total),
+            p10: percentile(hist, 0.10, total),
+            p50: percentile(hist, 0.50, total),
+            p90: percentile(hist, 0.90, total),
+            p95: percentile(hist, 0.95, total),
+            p99: percentile(hist, 0.99, total),
+            meanLum: lumSum / total,
+            satMean: satSum / total,
+            rbMean: rbSum / total
+        )
+    }
 
-        let p10 = percentile(hist, 0.10, total)
-        let p50 = percentile(hist, 0.50, total)
-        let p90 = percentile(hist, 0.90, total)
+    // MARK: - 1) 定调（曝光锚定 + 胶片曲线）
 
-        // —— 基准归一化 ——
-        // 关键：RAW 渲染出来的底子和系统 JPEG 不在同一个亮度区间（同一场景中位亮度能差 0.07），
-        // 所以先用中位亮度把画面锚到标定域（0.43），再做固定曲线，否则中调会整片顶进高光肩部。
-        let anchor = 0.43
-        let normGain = clamp(anchor / max(p50, 0.05), 0.55, 1.75)
-        Diag.mark(String(format: "grade.in median=%.3f p10=%.3f p90=%.3f sat=%.3f rb=%.3f gain=%.2f",
-                         p50, p10, p90, meanSat, meanRb, normGain))
+    /// 中位亮度锚到 0.44，黑位锚到 0.022，再走一条“中调柔、高光奶油”的曲线。
+    /// 用中位数而不是均值/固定系数，是为了让不同光线、不同机型底子都能落在同一条曲线上。
+    @discardableResult
+    private static func tone(_ r: Raster, _ s: Stats) -> Bool {
+        let px = r.px
+        let n = r.width * r.height
 
-        // —— 场景权重（只做温和的自适应，主旋律是固定曲线）——
-        let night = 1.0 - smooth((meanLum - 0.20) / 0.16)
-        let bright = smooth((meanLum - 0.50) / 0.28)
+        let gain = clamp(0.44 / max(s.p50, 0.06), 0.45, 2.20)
+        let blackAfterGain = s.p2 * gain
+        let lift = clamp(0.022 - blackAfterGain, -0.030, 0.050)
+        // 高光起点随底子略微移动，保证爆掉的高光也能被收住
+        let shoulderT = clamp(0.66 - max(0.0, (s.p95 - 0.86)) * 0.35, 0.50, 0.72)
 
-        // 曝光：归一化 × 基准 1.05；夜景再亮一点；大白场景略收
-        var expo = normGain * (1.05 + night * 0.07 - bright * 0.05)
-        let toe = max(0.0, 0.030 - night * 0.012 + bright * 0.004)
-        // 饱和度按实测偏差补：目标 0.265 左右
-        var sat = 1.06 + (0.265 - meanSat) * 1.20 - bright * 0.03
-        sat = clamp(sat, 0.96, 1.34)
-        let grain = 0.009 + 0.004 * (1.0 - smooth(meanLum))
-        // 暖相（画面偏红偏黄）时轻微补一点饱和度
-        let warmBias = clamp(meanRb / 0.05, 0, 1)
-
-        // 固定曲线参数（按 gloam 样片标定）
-        let shoulderT = 0.56
-        let shMulR = 1.02 + warmBias * 0.01
-        let shMulG = 0.98
-        let shMulB = 0.94
-        let hiMulR = 1.02
-        let hiMulG = 1.00
-        let hiMulB = 0.96
-        let coldConverge = 0.10
-
-        // —— 第二遍：逐像素 ——
-        var rng: UInt64 = 72
-        i = 0
+        var i = 0
         while i < n {
             let o = i * 4
-            var rf = Double(px[o]) / 255.0
-            var gf = Double(px[o + 1]) / 255.0
-            var bf = Double(px[o + 2]) / 255.0
+            var rf = Double(px[o]) / 255.0 * gain + lift
+            var gf = Double(px[o + 1]) / 255.0 * gain + lift
+            var bf = Double(px[o + 2]) / 255.0 * gain + lift
 
-            // 饱和度归一
-            let gray = 0.299 * rf + 0.587 * gf + 0.114 * bf
-            rf = gray + (rf - gray) * sat
-            gf = gray + (gf - gray) * sat
-            bf = gray + (bf - gray) * sat
+            rf = film(rf, shoulderT)
+            gf = film(gf, shoulderT)
+            bf = film(bf, shoulderT)
 
-            // 冷相（绿/蓝主导）收敛，避免蓝被子那种“跳蓝”
-            if gf > rf && gf > bf { gf -= (gf - max(rf, bf)) * coldConverge }
-            if bf > rf && bf > gf { bf -= (bf - max(rf, gf)) * coldConverge }
-
-            // 曝光 + 高光肩部（逐通道，天然把高光的冷白压成奶油白）
-            rf = shoulder(rf * expo, shoulderT)
-            gf = shoulder(gf * expo, shoulderT)
-            bf = shoulder(bf * expo, shoulderT)
-
-            var lum = 0.299 * rf + 0.587 * gf + 0.114 * bf
-            let sh = 1.0 - smooth(lum / 0.38)
-            let hi = smooth((lum - 0.42) / 0.58)
-
-            // 黑位脚部：只压暗部，不动中高光
-            let toeAmt = toe * (1.0 - smooth(lum / 0.28))
-            rf -= toeAmt; gf -= toeAmt; bf -= toeAmt
-
-            // 暗部偏暖褐 / 高光偏奶油（乘性，不吃掉黑位）
-            if sh > 0 {
-                rf *= 1.0 + sh * (shMulR - 1.0)
-                gf *= 1.0 + sh * (shMulG - 1.0)
-                bf *= 1.0 + sh * (shMulB - 1.0)
-            }
-            if hi > 0 {
-                rf *= 1.0 + hi * (hiMulR - 1.0)
-                gf *= 1.0 + hi * (hiMulG - 1.0)
-                bf *= 1.0 + hi * (hiMulB - 1.0)
-            }
-
-            lum = 0.299 * rf + 0.587 * gf + 0.114 * bf
-
-            // 胶片颗粒（暗部更明显）
-            let lumGrain = grain * (0.55 + 0.70 * sh)
-            rng = rng &* 6364136223846793005 &+ 1442695040888963407
-            let n1 = Double(Int(rng >> 33) % 100000) / 100000.0 - 0.5
-            rf += n1 * lumGrain
-            gf += n1 * lumGrain * 0.96
-            bf += n1 * lumGrain * 0.92
-            rng = rng &* 6364136223846793005 &+ 1442695040888963407
-            let n2 = Double(Int(rng >> 33) % 100000) / 100000.0 - 0.5
-            rf += n2 * lumGrain * 0.25
-            gf += n2 * lumGrain * 0.25
-            bf += n2 * lumGrain * 0.25
-
-            _ = lum
             px[o] = UInt8(clamp(rf, 0, 1) * 255.0 + 0.5)
             px[o + 1] = UInt8(clamp(gf, 0, 1) * 255.0 + 0.5)
             px[o + 2] = UInt8(clamp(bf, 0, 1) * 255.0 + 0.5)
             px[o + 3] = 255
             i += 1
         }
+        Diag.mark(String(format: "tone gain=%.2f lift=%.3f shoulder=%.2f median=%.3f p95=%.3f",
+                         gain, lift, shoulderT, s.p50, s.p95))
         return true
     }
 
-    /// 高光肩部：t 以下保持线性，t 以上按二次衰减压回，得到胶片式的高光滚落。
+    /// 单通道胶片曲线：
+    ///  - 中调轻微加对比（围绕 0.46，向两端收敛，所以不会把暗部和高光压硬）
+    ///  - 高光从 shoulderT 起用 2.4 次幂平滑滚落，最亮仍可到 1.0（保留高光点）
+    ///  - 极暗处留一点密度（film base），不发死
     @inline(__always)
-    private static func shoulder(_ v: Double, _ t: Double) -> Double {
-        if v <= t { return max(0.0, v) }
-        let d = v - t
-        let y = v - (d * d / (1.0 - t))
-        return max(0.0, y)
+    private static func film(_ x: Double, _ shoulderT: Double) -> Double {
+        var v = clamp(x, 0, 1)
+        // 中调柔对比
+        let pivot = 0.46
+        let d = v - pivot
+        v = pivot + d * (1.0 + 0.10 * (1.0 - min(1.0, abs(d) / 0.58)))
+        // 高光肩部
+        if v > shoulderT {
+            let u = min(1.0, (v - shoulderT) / (1.0 - shoulderT))
+            v = shoulderT + (1.0 - shoulderT) * (1.0 - pow(1.0 - u, 2.4))
+        }
+        return clamp(v, 0, 1)
     }
 
-    // MARK: - 柔焦 + 轻锐化
+    // MARK: - 2) 上色（饱和度软膝 + 色相微旋 + 分区偏色）
 
-    private static func softSharpen(_ r: Raster, soft: Double, sharpen: Double) {
-        let w = r.width
-        let h = r.height
-        guard let blur = Raster.make(width: w, height: h) else { return }
-        defer { blur.dispose() }
-        let src = r.px
-        let dst = blur.px
+    private static func color(_ r: Raster, _ s: Stats) {
+        let px = r.px
+        let n = r.width * r.height
 
-        for y in 0..<h {
-            let yUp = max(0, y - 1)
-            let yDown = min(h - 1, y + 1)
-            for x in 0..<w {
-                let xL = max(0, x - 1)
-                let xR = min(w - 1, x + 1)
-                let o = (y * w + x) * 4
-                let oU = (yUp * w + x) * 4
-                let oD = (yDown * w + x) * 4
-                let oL = (y * w + xL) * 4
-                let oR = (y * w + xR) * 4
-                dst[o] = UInt8((Int(src[o]) + Int(src[oU]) + Int(src[oD]) + Int(src[oL]) + Int(src[oR])) / 5)
-                dst[o + 1] = UInt8((Int(src[o + 1]) + Int(src[oU + 1]) + Int(src[oD + 1]) + Int(src[oL + 1]) + Int(src[oR + 1])) / 5)
-                dst[o + 2] = UInt8((Int(src[o + 2]) + Int(src[oU + 2]) + Int(src[oD + 2]) + Int(src[oL + 2]) + Int(src[oR + 2])) / 5)
-                dst[o + 3] = 255
-            }
-        }
+        // 场景自适应只做很小的修正：整体越暗，饱和度补偿越轻（夜景不要把噪色炒出来）
+        let satScale = clamp(0.92 + (0.44 - s.satMean) * 0.45, 0.86, 1.10)
+        let warm = clamp(s.rbMean / 0.06, 0, 1)
 
-        for i in 0..<(w * h) {
+        var i = 0
+        while i < n {
             let o = i * 4
-            for c in 0..<3 {
-                let cr = Double(src[o + c]) / 255.0
-                let br = Double(dst[o + c]) / 255.0
-                var v = cr * (1 - soft) + br * soft
-                v += sharpen * (v - br)
-                src[o + c] = UInt8(clamp(v, 0, 1) * 255.0 + 0.5)
+            let rf = Double(px[o]) / 255.0
+            let gf = Double(px[o + 1]) / 255.0
+            let bf = Double(px[o + 2]) / 255.0
+
+            let Y = 0.299 * rf + 0.587 * gf + 0.114 * bf
+            let mx = max(rf, max(gf, bf))
+            let mn = min(rf, min(gf, bf))
+            let S = mx > 1e-6 ? (mx - mn) / mx : 0
+
+            // —— 饱和度软膝：0.26 以下不动，以上按二次衰减收回
+            let knee = 0.26
+            var targetS = S
+            if S > knee {
+                let t = (S - knee) / max(1e-6, 1.0 - knee)
+                targetS = S - 0.55 * t * t * (1.0 - knee)
             }
-            src[o + 3] = 255
+            targetS *= satScale
+
+            // —— 色相判断（HSV 色相），按色带做增益与旋转
+            var hDeg = 0.0
+            var hasHue = false
+            let d = mx - mn
+            if d > 1e-5 {
+                hasHue = true
+                if mx == rf {
+                    hDeg = 60.0 * (((gf - bf) / d).truncatingRemainder(dividingBy: 6.0))
+                    if hDeg < 0 { hDeg += 360.0 }
+                } else if mx == gf {
+                    hDeg = 60.0 * ((bf - rf) / d) + 120.0
+                } else {
+                    hDeg = 60.0 * ((rf - gf) / d) + 240.0
+                }
+            }
+
+            var hueSat = 1.0
+            var hueRot = 0.0
+            if hasHue {
+                switch hDeg {
+                case 30..<75:      // 黄
+                    hueSat = 0.95; hueRot = 3.0
+                case 75..<165:     // 绿 → 青绿
+                    hueSat = 0.88; hueRot = 8.0
+                case 165..<250:    // 青蓝
+                    hueSat = 0.94; hueRot = -4.0
+                case 250..<300:    // 紫
+                    hueSat = 0.92; hueRot = 2.0
+                default:           // 红/橙/品红：略提，M72 的红是暖砖红
+                    hueSat = 1.02 + warm * 0.02; hueRot = -2.0
+                }
+            }
+
+            // 应用饱和度：围绕亮度 Y 缩放色度
+            let m = S > 1e-6 ? (targetS / S) * hueSat : 1.0
+            var cr = Y + (rf - Y) * m
+            var cg2 = Y + (gf - Y) * m
+            var cb = Y + (bf - Y) * m
+
+            // 色相微旋（在 Cb/Cr 平面旋转，等价于绕灰轴的色相旋转）
+            if hasHue && abs(hueRot) > 0.01 {
+                let Cb = (cb - Y) * 0.564
+                let Cr = (cr - Y) * 0.713
+                let rad = hueRot * Double.pi / 180.0
+                let co = cos(rad), si = sin(rad)
+                let Cb2 = Cb * co - Cr * si
+                let Cr2 = Cr * co + Cb * si
+                cr = Y + Cr2 / 0.713
+                cb = Y + Cb2 / 0.564
+            }
+
+            // —— 分区偏色
+            let hi = smooth((Y - 0.60) / 0.40)
+            let sh = 1.0 - smooth(Y / 0.30)
+            cr *= 1.0 + 0.020 * hi - 0.006 * sh
+            cg2 *= 1.0 + 0.008 * hi + 0.002 * sh
+            cb *= 1.0 - 0.014 * hi + 0.010 * sh
+
+            px[o] = UInt8(clamp(cr, 0, 1) * 255.0 + 0.5)
+            px[o + 1] = UInt8(clamp(cg2, 0, 1) * 255.0 + 0.5)
+            px[o + 2] = UInt8(clamp(cb, 0, 1) * 255.0 + 0.5)
+            px[o + 3] = 255
+            i += 1
         }
     }
 
-    // MARK: - 高光辉光
+    // MARK: - 3) 润：高光辉光 / 中高频收敛
 
-    private static func bloom(_ r: Raster, threshold: Double, strength: Double) {
+    private static func halo(_ r: Raster) {
         let w = r.width
         let h = r.height
         guard let mask = Raster.make(width: w, height: h),
-              let tmp = Raster.make(width: w, height: h) else { return }
-        defer { mask.dispose(); tmp.dispose() }
+              let blur = Raster.make(width: w, height: h) else { return }
+        defer { mask.dispose(); blur.dispose() }
 
         let src = r.px
-        let hiPtr = mask.px
+        let mp = mask.px
+        let bp = blur.px
+        let threshold = 0.70
         let denom = max(1e-6, 1.0 - threshold)
 
-        for i in 0..<(w * h) {
+        var i = 0
+        let n = w * h
+        while i < n {
             let o = i * 4
             let rf = Double(src[o]) / 255.0
             let gf = Double(src[o + 1]) / 255.0
             let bf = Double(src[o + 2]) / 255.0
             let lum = 0.299 * rf + 0.587 * gf + 0.114 * bf
             let m = clamp(smooth((lum - threshold) / denom), 0, 1)
-            hiPtr[o] = UInt8(rf * m * 255.0 + 0.5)
-            hiPtr[o + 1] = UInt8(gf * m * 255.0 + 0.5)
-            hiPtr[o + 2] = UInt8(bf * m * 255.0 + 0.5)
-            hiPtr[o + 3] = 255
+            mp[o] = UInt8(rf * m * 255.0 + 0.5)
+            mp[o + 1] = UInt8(gf * m * 255.0 + 0.5)
+            mp[o + 2] = UInt8(bf * m * 255.0 + 0.5)
+            mp[o + 3] = 255
+            i += 1
         }
 
-        blur5(hiPtr, tmp.px, w, h)
-        blur5(tmp.px, hiPtr, w, h)
+        // 半径跟着画面尺寸走：约短边 0.30%，3 次盒式模糊近似高斯；结果始终落在 mask 上
+        let radius = max(2, Int((Double(min(w, h)) * 0.0030).rounded()))
+        boxBlur(mp, bp, w, h, radius)
+        boxBlur(mp, bp, w, h, radius)
+        boxBlur(mp, bp, w, h, radius)
 
-        for i in 0..<(w * h) {
+        let strength = 0.13
+        i = 0
+        while i < n {
             let o = i * 4
             let cr = Double(src[o]) / 255.0
             let cg = Double(src[o + 1]) / 255.0
             let cb = Double(src[o + 2]) / 255.0
-            let gr = Double(hiPtr[o]) / 255.0
-            let gg = Double(hiPtr[o + 1]) / 255.0
-            let gb = Double(hiPtr[o + 2]) / 255.0
-            src[o] = UInt8(clamp(cr + gr * strength * 1.05, 0, 1) * 255.0 + 0.5)
-            src[o + 1] = UInt8(clamp(cg + gg * strength, 0, 1) * 255.0 + 0.5)
-            src[o + 2] = UInt8(clamp(cb + gb * strength * 0.9, 0, 1) * 255.0 + 0.5)
+            // 高光辉光偏暖（胶片 halation 的红晕），蓝通道最少
+            let hr = Double(mp[o]) / 255.0
+            let hg = Double(mp[o + 1]) / 255.0
+            let hb = Double(mp[o + 2]) / 255.0
+            src[o] = UInt8(clamp(cr + hr * strength * 1.15, 0, 1) * 255.0 + 0.5)
+            src[o + 1] = UInt8(clamp(cg + hg * strength * 1.00, 0, 1) * 255.0 + 0.5)
+            src[o + 2] = UInt8(clamp(cb + hb * strength * 0.80, 0, 1) * 255.0 + 0.5)
             src[o + 3] = 255
+            i += 1
         }
     }
+
+    /// 中高频轻微收敛（“润”的关键）：把 1px 附近的细节能量收回一点，但不整体糊。
+    private static func micro(_ r: Raster) {
+        let w = r.width
+        let h = r.height
+        guard let tmp = Raster.make(width: w, height: h) else { return }
+        defer { tmp.dispose() }
+        blur5(r.px, tmp.px, w, h)
+
+        let src = r.px
+        let tp = tmp.px
+        let soft = 0.16
+        var i = 0
+        let n = w * h
+        while i < n {
+            let o = i * 4
+            for c in 0..<3 {
+                let a = Double(src[o + c]) / 255.0
+                let b = Double(tp[o + c]) / 255.0
+                var v = a * (1.0 - soft) + b * soft
+                // 之后补一点点边缘清晰度，避免糊成一片
+                v += 0.07 * (v - b)
+                src[o + c] = UInt8(clamp(v, 0, 1) * 255.0 + 0.5)
+            }
+            src[o + 3] = 255
+            i += 1
+        }
+    }
+
+    // MARK: - 4) 颗粒与暗角
+
+    private static func grain(_ r: Raster, _ s: Stats) {
+        let px = r.px
+        let n = r.width * r.height
+        // 亮部颗粒更弱（负片在高光更细腻），暗部稍强
+        let amp = 0.020 * (1.0 - 0.55 * smooth((s.p50 - 0.30) / 0.45))
+        var rng: UInt64 = 72
+
+        var i = 0
+        while i < n {
+            let o = i * 4
+            let rf = Double(px[o]) / 255.0
+            let gf = Double(px[o + 1]) / 255.0
+            let bf = Double(px[o + 2]) / 255.0
+            let lum = 0.299 * rf + 0.587 * gf + 0.114 * bf
+            let local = amp * (1.0 - 0.45 * smooth((lum - 0.55) / 0.45))
+            rng = rng &* 6364136223846793005 &+ 1442695040888963407
+            let n1 = Double(Int(rng >> 33) % 100000) / 100000.0 - 0.5
+            rng = rng &* 6364136223846793005 &+ 1442695040888963407
+            let n2 = Double(Int(rng >> 33) % 100000) / 100000.0 - 0.5
+            px[o] = UInt8(clamp(rf + n1 * local, 0, 1) * 255.0 + 0.5)
+            px[o + 1] = UInt8(clamp(gf + n1 * local * 0.97 + n2 * local * 0.12, 0, 1) * 255.0 + 0.5)
+            px[o + 2] = UInt8(clamp(bf + n1 * local * 0.94 + n2 * local * 0.20, 0, 1) * 255.0 + 0.5)
+            px[o + 3] = 255
+            i += 1
+        }
+    }
+
+    private static func vignette(_ r: Raster) {
+        let w = r.width
+        let h = r.height
+        let px = r.px
+        let cx = Double(w) / 2.0
+        let cy = Double(h) / 2.0
+        let maxDist = 1.41421356
+
+        for y in 0..<h {
+            let ny = abs((Double(y) - cy) / cy)
+            let row = y * w
+            for x in 0..<w {
+                let nx = abs((Double(x) - cx) / cx)
+                let d = (nx * nx + ny * ny).squareRoot() / maxDist
+                let corner = nx * ny
+                let k = clamp(1.0 - d * d * 0.10 - corner * 0.05, 0.86, 1.0)
+                let o = (row + x) * 4
+                px[o] = UInt8(Double(px[o]) * k + 0.5)
+                px[o + 1] = UInt8(Double(px[o + 1]) * k + 0.5)
+                px[o + 2] = UInt8(Double(px[o + 2]) * k + 0.5)
+            }
+        }
+    }
+
+    // MARK: - 模糊
 
     private static func blur5(_ src: UnsafeMutablePointer<UInt8>, _ dst: UnsafeMutablePointer<UInt8>, _ w: Int, _ h: Int) {
         for y in 0..<h {
@@ -488,28 +621,57 @@ enum M72Filter {
         }
     }
 
-    // MARK: - 暗角
-
-    private static func vignette(_ r: Raster) {
-        let w = r.width
-        let h = r.height
-        let px = r.px
-        let cx = Double(w) / 2.0
-        let cy = Double(h) / 2.0
-        let maxDist = 1.41421356
-
+    /// 可分离盒式模糊（O(N)），用于大半径辉光。
+    private static func boxBlur(_ src: UnsafeMutablePointer<UInt8>,
+                                _ dst: UnsafeMutablePointer<UInt8>,
+                                _ w: Int, _ h: Int, _ radius: Int) {
+        let r = max(1, radius)
+        let win = 2 * r + 1
+        // 横向
         for y in 0..<h {
-            let ny = abs((Double(y) - cy) / cy)
             let row = y * w
-            for x in 0..<w {
-                let nx = abs((Double(x) - cx) / cx)
-                let d = (nx * nx + ny * ny).squareRoot() / maxDist
-                let corner = nx * ny
-                let k = clamp(1.0 - d * d * 0.16 - corner * 0.08, 0.80, 1.0)
+            var sumR = 0, sumG = 0, sumB = 0
+            for k in -r...r {
+                let x = min(w - 1, max(0, k))
                 let o = (row + x) * 4
-                px[o] = UInt8(Double(px[o]) * k + 0.5)
-                px[o + 1] = UInt8(Double(px[o + 1]) * k + 0.5)
-                px[o + 2] = UInt8(Double(px[o + 2]) * k + 0.5)
+                sumR += Int(src[o]); sumG += Int(src[o + 1]); sumB += Int(src[o + 2])
+            }
+            for x in 0..<w {
+                let o = (row + x) * 4
+                dst[o] = UInt8(sumR / win)
+                dst[o + 1] = UInt8(sumG / win)
+                dst[o + 2] = UInt8(sumB / win)
+                dst[o + 3] = 255
+                let xOut = min(w - 1, max(0, x - r))
+                let xIn = min(w - 1, max(0, x + r + 1))
+                let oo = (row + xOut) * 4
+                let oi = (row + xIn) * 4
+                sumR += Int(src[oi]) - Int(src[oo])
+                sumG += Int(src[oi + 1]) - Int(src[oo + 1])
+                sumB += Int(src[oi + 2]) - Int(src[oo + 2])
+            }
+        }
+        // 纵向（读 dst，写 src 的临时？这里直接读 dst 写 dst 会污染，改用逐列缓冲）
+        var col = [Int](repeating: 0, count: 3)
+        let rows = h
+        for x in 0..<w {
+            var sumR = 0, sumG = 0, sumB = 0
+            for k in -r...r {
+                let y = min(h - 1, max(0, k))
+                let o = (y * w + x) * 4
+                sumR += Int(dst[o]); sumG += Int(dst[o + 1]); sumB += Int(dst[o + 2])
+            }
+            for y in 0..<rows {
+                let o = (y * w + x) * 4
+                col[0] = sumR / win; col[1] = sumG / win; col[2] = sumB / win
+                src[o] = UInt8(col[0]); src[o + 1] = UInt8(col[1]); src[o + 2] = UInt8(col[2]); src[o + 3] = 255
+                let yOut = min(h - 1, max(0, y - r))
+                let yIn = min(h - 1, max(0, y + r + 1))
+                let oo = (yOut * w + x) * 4
+                let oi = (yIn * w + x) * 4
+                sumR += Int(dst[oi]) - Int(dst[oo])
+                sumG += Int(dst[oi + 1]) - Int(dst[oo + 1])
+                sumB += Int(dst[oi + 2]) - Int(dst[oo + 2])
             }
         }
     }
@@ -521,8 +683,8 @@ enum M72Filter {
         let H = r.height
         guard W > 16, H > 16, let src = r.makeImage() else { return nil }
 
-        let side = Int((Double(min(W, H)) * 0.013).rounded())
-        let topBottom = Int((Double(min(W, H)) * 0.011).rounded())
+        let side = Int((Double(min(W, H)) * 0.011).rounded())
+        let topBottom = Int((Double(min(W, H)) * 0.009).rounded())
         let maxW = Double(W - side * 2)
         let maxH = Double(H - topBottom * 2)
         guard maxW > 4, maxH > 4 else { return src }
@@ -581,7 +743,6 @@ enum M72Filter {
         v < lo ? lo : (v > hi ? hi : v)
     }
 
-    /// 直方图分位（hist 为 256 桶亮度分布）
     private static func percentile(_ hist: [Int], _ p: Double, _ total: Double) -> Double {
         let need = total * p
         var acc = 0.0
