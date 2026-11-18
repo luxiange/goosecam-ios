@@ -150,27 +150,23 @@ enum M72Filter {
     static func developRaw(_ data: Data) -> UIImage? {
         var ci: CIImage?
         if let filter = CIRAWFilter(imageData: data) {
-            filter.isDraftModeEnabled = false
-            filter.isLensCorrectionEnabled = true
-            filter.isGamutMappingEnabled = true
-
-            // 关掉 Apple 的自动影调：这些会把高光压平、暗部抬起，画面立刻变平
-            filter.extendedDynamicRangeAmount = 0
-            filter.boostAmount = 0
-            filter.boostShadowAmount = 0
-            filter.contrastAmount = 0          // 边缘局部对比（“塑料感”来源）
-            filter.detailAmount = 0
-            filter.moireReductionAmount = 0
-            if filter.isLocalToneMapSupported { filter.localToneMapAmount = 0 }
-            // 关掉自动降噪/锐化：我们要的是 RAW 的原始质感，颗粒后面自己加
-            if filter.isColorNoiseReductionSupported { filter.colorNoiseReductionAmount = 0 }
-            if filter.isLuminanceNoiseReductionSupported { filter.luminanceNoiseReductionAmount = 0 }
-            if filter.isSharpnessSupported { filter.sharpnessAmount = 0 }
-            // 高光恢复也关掉，让高光自然滚落，由我们的 shoulder 曲线接管
-            if filter.isHighlightRecoverySupported { filter.isHighlightRecoveryEnabled = false }
+            rawSetFloat(filter, "extendedDynamicRangeAmount", 0)     // EDR / HDR 增益
+            rawSetFloat(filter, "boostAmount", 0)                     // 全局色调曲线
+            rawSetFloat(filter, "boostShadowAmount", 0)               // 暗部抬升
+            rawSetFloat(filter, "contrastAmount", 0)                  // 边缘局部对比
+            rawSetFloat(filter, "localToneMapAmount", 0)              // 局部色调映射（压平高光的元凶）
+            rawSetFloat(filter, "luminanceNoiseReductionAmount", 0)   // 亮度降噪
+            rawSetFloat(filter, "colorNoiseReductionAmount", 0)       // 色彩降噪
+            rawSetFloat(filter, "sharpnessAmount", 0)                 // 锐化
+            rawSetFloat(filter, "detailAmount", 0)                    // 细节增强（RAW 9 起作废）
+            rawSetFloat(filter, "moireReductionAmount", 0)            // 摩尔纹抑制（RAW 9 起作废）
+            rawSetBool(filter, "isHighlightRecoveryEnabled", false)   // 高光恢复：交给我们的 shoulder
+            rawSetBool(filter, "isDraftModeEnabled", false)
+            rawSetBool(filter, "isGamutMappingEnabled", true)         // 保留：正确映射到 sRGB 色域
+            rawSetBool(filter, "isLensCorrectionEnabled", true)       // 保留：矫正手机镜头的桶形畸变
 
             ci = filter.outputImage
-            Diag.mark("raw.cirawfilter ok toneMap=\(filter.isLocalToneMapSupported ? "0" : "n/a")")
+            Diag.mark("raw.cirawfilter ok")
         }
         if ci == nil {
             let tmp = FileManager.default.temporaryDirectory
@@ -206,6 +202,29 @@ enum M72Filter {
         }
         Diag.mark("raw.render ok \(Int(extent.width))x\(Int(extent.height))")
         return UIImage(cgImage: cg, scale: 1, orientation: .up)
+    }
+
+    /// 安全设置 CIRAWFilter 的浮点属性。
+    /// iOS 27 的运行时已经把一批 RAW 9 时代作废的 setter（detailAmount / moireReductionAmount 等）删掉，
+    /// 直接调属性会抛 unrecognized selector 把 App 打死（SIGABRT）。所以先探测 selector 再设值。
+    private static func rawSetFloat(_ filter: CIRAWFilter, _ key: String, _ value: Float) {
+        let cap = key.prefix(1).uppercased() + key.dropFirst()
+        let sel = NSSelectorFromString("set\(cap):")
+        guard filter.responds(to: sel) else {
+            Diag.mark("raw.skip \(key)")
+            return
+        }
+        filter.setValue(value, forKey: key)
+    }
+
+    private static func rawSetBool(_ filter: CIRAWFilter, _ key: String, _ value: Bool) {
+        let cap = key.prefix(1).uppercased() + key.dropFirst()
+        let sel = NSSelectorFromString("set\(cap):")
+        guard filter.responds(to: sel) else {
+            Diag.mark("raw.skip \(key)")
+            return
+        }
+        filter.setValue(value, forKey: key)
     }
 
     /// 居中裁切 4:5（横图 5:4）后写入自建位图。
