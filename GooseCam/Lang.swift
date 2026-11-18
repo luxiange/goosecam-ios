@@ -50,11 +50,12 @@ struct L10n {
         "updated": "更新时间",
         "developer": "开发者",
         "contact": "联系方式",
-        "updated_date": "2026-11-17",
+        "updated_date": "2026-11-18",
         "developer_name": "录像鹅",
         "contact_email": "18666894113@163.com",
         "permission_camera": "需要相机权限才能拍摄",
-        "processing": "正在运算"
+        "processing": "正在运算",
+        "photo_processing": "后台胶片冲印中，可继续拍照"
     ]
 
     static let en: [String: String] = [
@@ -89,10 +90,11 @@ struct L10n {
         "updated": "Updated",
         "developer": "Developer",
         "contact": "Contact",
-        "updated_date": "2026-11-17",
+        "updated_date": "2026-11-18",
         "developer_name": "录像鹅",
         "contact_email": "18666894113@163.com",
         "permission_camera": "Camera permission is required",
-        "processing": "Processing"
+        "processing": "Processing",
+        "photo_processing": "Film developing in the background, keep shooting"
     ]
 }

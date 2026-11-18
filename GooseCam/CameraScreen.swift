@@ -3,14 +3,13 @@ import AVFoundation
 import UIKit
 
 /// 主界面：复刻安卓 activity_main.xml 的层级——4:5 取景框 / 网格 / 水平仪 / 对焦框 /
-/// 焦段条 / 闪光灯 / 快门 / 左下角缩略图 / 右下角相机图案（进设置）。
+/// 焦段条（真实读取机身物理镜头）/ 闪光灯 / 快门 / 左下角缩略图 / 右下角相机图案（进设置）。
 struct CameraScreen: View {
     @AppStorage("app_lang") private var langRaw: String = "zh"
 
     @StateObject private var camera = CameraSession()
     @StateObject private var motion = MotionRoll()
 
-    @State private var focalIndex = 0
     @State private var showSettings = false
     @State private var showGallery = false
     @State private var thumb: UIImage?
@@ -19,11 +18,6 @@ struct CameraScreen: View {
     @State private var toast: String?
 
     private var t: L10n { L10n(raw: langRaw) }
-    private let focalList: [(mm: Int, zoom: String, factor: CGFloat)] = [
-        (23, "1x", 1.0),
-        (75, "3x", 3.0),
-        (120, "5x", 5.0)
-    ]
 
     var body: some View {
         ZStack {
@@ -31,16 +25,13 @@ struct CameraScreen: View {
 
             VStack(spacing: 0) {
                 previewArea
-                ZStack {
-                    if camera.busy {
-                        ProgressView()
-                            .tint(.white)
-                    }
-                }
-                .frame(height: 28)
-                .padding(.top, 8)
+
+                processingRow
+                    .frame(height: 26)
+                    .padding(.top, 6)
 
                 focalBar
+                    .padding(.top, 2)
 
                 Spacer(minLength: 6)
 
@@ -61,7 +52,6 @@ struct CameraScreen: View {
                 }
             }
         }
-        .statusBarHidden(false)
         .onAppear {
             camera.onSaved = { refreshThumb() }
             camera.prepare()
@@ -72,11 +62,23 @@ struct CameraScreen: View {
             camera.stop()
             motion.stop()
         }
+        .onChange(of: camera.lastError) { value in
+            guard let value else { return }
+            showToast(value)
+        }
         .sheet(isPresented: $showSettings, onDismiss: { refreshThumb() }) {
             SettingsView()
         }
         .sheet(isPresented: $showGallery, onDismiss: { refreshThumb() }) {
             GalleryView()
+        }
+    }
+
+    private func showToast(_ text: String) {
+        withAnimation(.easeOut(duration: 0.15)) { toast = text }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.2) {
+            withAnimation(.easeIn(duration: 0.2)) { toast = nil }
+            camera.lastError = nil
         }
     }
 
@@ -112,47 +114,65 @@ struct CameraScreen: View {
         camera.focus(at: devicePoint)
         focusLocal = localPoint
         focusLocked = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            focusLocked = true
-        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { focusLocked = true }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.4) {
             focusLocal = nil
             focusLocked = false
         }
     }
 
-    // MARK: - 焦段条
+    // MARK: - 冲印状态
+
+    private var processingRow: some View {
+        HStack(spacing: 6) {
+            if camera.processing {
+                ProgressView()
+                    .controlSize(.mini)
+                    .tint(.white.opacity(0.8))
+                Text(t.s("photo_processing"))
+                    .font(.system(size: 11))
+                    .foregroundColor(.white.opacity(0.7))
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .animation(.easeInOut(duration: 0.2), value: camera.processing)
+    }
+
+    // MARK: - 焦段条（真实镜头）
 
     private var focalBar: some View {
         HStack(spacing: 0) {
-            ForEach(0..<focalList.count, id: \.self) { index in
+            ForEach(camera.lenses) { lens in
                 Button {
-                    selectFocal(index)
+                    camera.selectLens(lens.id)
                 } label: {
                     VStack(spacing: 1) {
-                        Text("\(focalList[index].mm)")
+                        Text("\(lens.focal)")
                             .font(.system(size: 17, weight: .bold))
-                        Text(focalList[index].zoom)
+                        Text(lens.zoomLabel)
                             .font(.system(size: 11))
                     }
-                    .foregroundColor(focalIndex == index
+                    .foregroundColor(camera.currentLensID == lens.id
                                      ? Color(red: 1.0, green: 0.82, blue: 0.29)
                                      : Color.white)
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 18)
                     .padding(.vertical, 6)
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
             }
+
+            if camera.lenses.isEmpty {
+                Text("26")
+                    .font(.system(size: 17, weight: .bold))
+                    .foregroundColor(Color(red: 1.0, green: 0.82, blue: 0.29))
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 6)
+            }
         }
         .padding(.horizontal, 10)
         .background(Capsule().fill(Color.black.opacity(0.55)))
         .overlay(Capsule().stroke(Color.white.opacity(0.14), lineWidth: 0.5))
-    }
-
-    private func selectFocal(_ index: Int) {
-        focalIndex = index
-        camera.setZoom(focalList[index].factor)
     }
 
     // MARK: - 底部操作区
@@ -200,6 +220,12 @@ struct CameraScreen: View {
                         .font(.system(size: 20))
                         .foregroundColor(.white.opacity(0.45))
                 }
+                if camera.processing {
+                    RoundedRectangle(cornerRadius: 5).fill(Color.black.opacity(0.45))
+                    ProgressView()
+                        .controlSize(.small)
+                        .tint(.white)
+                }
             }
             .frame(width: 58, height: 58)
             .clipShape(RoundedRectangle(cornerRadius: 5))
@@ -218,7 +244,6 @@ struct CameraScreen: View {
                 .frame(width: 62, height: 62)
         }
         .contentShape(Circle())
-        .opacity(camera.busy ? 0.55 : 1.0)
         .onTapGesture {
             shoot()
         }
@@ -237,7 +262,6 @@ struct CameraScreen: View {
     }
 
     private func shoot() {
-        guard !camera.busy else { return }
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         camera.capture()
     }

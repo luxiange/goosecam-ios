@@ -87,20 +87,23 @@ final class PhotoStore {
     }
 
     private func saveToSystemPhotos(_ data: Data) {
-        let status = PHPhotoLibrary.authorizationStatus(for: .addOnly)
-        let write: (PHAuthorizationStatus) -> Void = { st in
-            guard st == .authorized || st == .limited else { return }
-            PHPhotoLibrary.shared().performChanges({
-                let request = PHAssetCreationRequest.forAsset()
-                request.addResource(with: .photo, data: data, options: nil)
-            }, completionHandler: nil)
-        }
-        if status == .notDetermined {
-            PHPhotoLibrary.requestAuthorization(for: .addOnly) { newStatus in
-                write(newStatus)
+        // 相册授权与写入都放到主线程，避免后台线程触发系统授权弹窗
+        DispatchQueue.main.async {
+            let write: (PHAuthorizationStatus) -> Void = { st in
+                guard st == .authorized || st == .limited else { return }
+                PHPhotoLibrary.shared().performChanges({
+                    let request = PHAssetCreationRequest.forAsset()
+                    request.addResource(with: .photo, data: data, options: nil)
+                }, completionHandler: nil)
             }
-        } else {
-            write(status)
+            let status = PHPhotoLibrary.authorizationStatus(for: .addOnly)
+            if status == .notDetermined {
+                PHPhotoLibrary.requestAuthorization(for: .addOnly) { newStatus in
+                    write(newStatus)
+                }
+            } else {
+                write(status)
+            }
         }
     }
 }
